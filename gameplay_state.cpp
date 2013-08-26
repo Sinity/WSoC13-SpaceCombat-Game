@@ -27,11 +27,9 @@ void GameplayState::handleInput(sf::Event event)
 
 GameplayState::GameplayState()
 {	
-    currentLevel = new Level;
-    currentLevel->loadFromFile("levels/1.txt");
-
-	background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0}, 0);
-    player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), currentLevel->startPos);
+    background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0}, 0);
+    player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
+    setLevel(1);
 
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
 }
@@ -61,16 +59,18 @@ void GameplayState::update(sf::Time elapsedTime)
 void GameplayState::setLevel(unsigned int levelID)
 {
     //dont draw elements of old level
-    for(Enemy* e : currentLevel->enemies)
-        servLoc.getRender()->removeObj(e);
-    for(Portal* p : currentLevel->portals)
-        servLoc.getRender()->removeObj(p);
+    if(currentLevel != nullptr)
+    {
+        for(Enemy* e : currentLevel->enemies)
+            servLoc.getRender()->removeObj(e);
+        for(Portal* p : currentLevel->portals)
+            servLoc.getRender()->removeObj(p);
 
-    for(Enemy* e : currentLevel->enemies)
-        servLoc.getRender()->removeObj(&e->representation);
-    for(Portal* p : currentLevel->portals)
-        servLoc.getRender()->removeObj(&p->representation);
-
+        for(Enemy* e : currentLevel->enemies)
+            servLoc.getRender()->removeObj(&e->representation);
+        for(Portal* p : currentLevel->portals)
+            servLoc.getRender()->removeObj(&p->representation);
+    }
     //check if file is alredy loaded
     for(Level* level : levels)
         if(level->id == levelID)
@@ -97,6 +97,7 @@ void GameplayState::setLevel(unsigned int levelID)
     newLevel->loadFromFile(ezo::string::format("levels/%u.txt", levelID).c());
     levels.emplace_back(newLevel);
     currentLevel = newLevel;
+    player->representation.setPosition(currentLevel->startPos);
 }
 
 void GameplayState::updateObjects(sf::Time elapsedTime)

@@ -50,7 +50,7 @@ void Enemy::shoot(sf::Vector2f target)
         sf::Vector2f shootDirection((float)sin(ezo::degToRad(angle)),
                                     (float)-cos(ezo::degToRad(angle)));
 
-        Bullet* b = new Bullet(servLoc.getResourceManager()->getTextureRect("ship"), //good is * bullet.width/height(probably) + costam (down)
+        Bullet* b = new Bullet(servLoc.getResourceManager()->getTextureRect("bullet_green"), //good is * bullet.width/height(probably) + costam (down)
             sf::Vector2f(representation.getPosition().x+shootDirection.x*50, representation.getPosition().y+shootDirection.y*50), shootDirection, 5000, attack);
 
         b->setAngle(this->angle);

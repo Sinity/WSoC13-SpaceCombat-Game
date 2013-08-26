@@ -51,6 +51,8 @@ void GameObject::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
 
 void GameObject::calculateAngle(sf::Time elapsedTime, sf::Vector2f target)
 {
+    servLoc.getProfiler()->start("calculateAngle()");
+
     float maxDelta = this->deltaAngle * elapsedTime.asSeconds();
 
     float newAngle = (float)-(atan2(representation.getPosition().x - target.x, representation.getPosition().y - target.y));
@@ -59,12 +61,16 @@ void GameObject::calculateAngle(sf::Time elapsedTime, sf::Vector2f target)
 
     float dAngle = newAngle - angle;
     if(dAngle > 180) dAngle -= 360;
-    if(dAngle < -180) dAngle += 360;
+        else if(dAngle < -180) dAngle += 360;
     if(dAngle > maxDelta) dAngle = maxDelta;
-    if(dAngle < -maxDelta) dAngle = -maxDelta;
+        else if(dAngle < -maxDelta) dAngle = -maxDelta;
 
     angle += dAngle;
+    if(angle < 0.f) angle += 360.f;
+        else if(angle > 360.f) angle -= 360.f;
     representation.setRotation(angle);
+
+    servLoc.getProfiler()->stop();
 }
 
 void GameObject::setAngle(float angle)

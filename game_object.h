@@ -11,7 +11,7 @@ public:
     virtual void updatePosition(sf::Time elapsedTime);
     void addForce(sf::Vector2f f);
 
-    void calculateAngle(sf::Time elapsedTime, sf::Vector2f target);
+    virtual void calculateAngle(sf::Time elapsedTime, sf::Vector2f target);
     void setAngle(float angle);
 
 	virtual void hit(unsigned int _hp);
@@ -32,7 +32,7 @@ protected:
     float mass = 1;
 	
     float deltaAngle = 270;
-    float angle = 0;
+    float angle = 0.f;
 	
 private:
 	sf::Vector2f oldPosition; //position before last updatePosition

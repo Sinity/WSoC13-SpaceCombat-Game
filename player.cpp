@@ -27,7 +27,7 @@ void Player::calculateAfterburnerForce(bool afterburnerKeyPressed, sf::Time elap
 
 Player::Player(TextureRect data, sf::Vector2f position) :
 	GameObject(data, position, 1),
-	boosterForcePerSecond(1000000000), haltDuration(sf::seconds(0.3f))
+    boosterForcePerSecond(1000000000), haltDuration(sf::seconds(0.3f))
 {
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
 	mass = 10000;
@@ -36,7 +36,7 @@ Player::Player(TextureRect data, sf::Vector2f position) :
 void Player::update(sf::Time elapsedTime)
 {
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		shoot(sf::Vector2f(0, 0));
+        shoot(sf::Vector2f(0, 0));
 		
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
         destroy();
@@ -51,21 +51,22 @@ void Player::update(sf::Time elapsedTime)
 
 void Player::shoot(sf::Vector2f target)
 {
-	haltAccumulator += clock.restart();
-	if(haltAccumulator > haltDuration)
-	{                                 
+    haltAccumulator += clock.restart();
+    if(haltAccumulator > haltDuration)
+    {
         sf::Vector2f shootDirection((float)sin(ezo::degToRad(angle)),
                                     (float)-cos(ezo::degToRad(angle)));
-		                              
-        Bullet* b = new Bullet(servLoc.getResourceManager()->getTextureRect("ship"), //good is * bullet.width/height(probably) + costam (down)
-            sf::Vector2f(representation.getPosition().x+shootDirection.x*50,
-                         representation.getPosition().y+shootDirection.y*50), shootDirection, 5000, 10);
-		
+
+        Bullet* b = new Bullet(servLoc.getResourceManager()->getTextureRect("bullet_green"),
+                               sf::Vector2f(representation.getPosition().x + shootDirection.x*representation.getLocalBounds().width,
+                               representation.getPosition().y + shootDirection.y*representation.getLocalBounds().height),
+                               shootDirection, 5000, 1000);
+
         b->setAngle(this->angle);
         bullets.push_back(b);
 
         haltAccumulator = sf::microseconds(0);
-	}
+    }
 }
 
 void Player::draw(sf::Time t, sf::RenderWindow* r)

@@ -11,18 +11,18 @@ public:
 	
 	//Physical stuff
 	void updatePosition(sf::Time elapsedTime);
-	void calculateAfterburnerForce(bool afterburnerKeyPressed, sf::Time elapsedTime);
+    void calculateAfterburnerForce(bool afterburnerKeyPressed, sf::Time elapsedTime);
 
-	void shoot(sf::Vector2f target);
+    void shoot(sf::Vector2f target);
 
     void update(sf::Time elapsedTime);
 
     std::vector<Bullet*> bullets;
 private:
 	unsigned int boosterForcePerSecond;
-	
-	//weapon
-	const sf::Time haltDuration;
-	sf::Clock clock;
-	sf::Time haltAccumulator;
+
+    //weapon
+    const sf::Time haltDuration;
+    sf::Clock clock;
+    sf::Time haltAccumulator;
 };
