@@ -5,7 +5,8 @@ class GameObject : public Drawable
 {
 public:
 	GameObject(TextureRect texrect, sf::Vector2f position, unsigned int level);
-	
+    ~GameObject();
+
     virtual void update(sf::Time elapsedTime);
 
     virtual void updatePosition(sf::Time elapsedTime);

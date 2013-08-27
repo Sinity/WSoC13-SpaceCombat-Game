@@ -19,7 +19,7 @@ Game::Game()
     resourceManager.loadResources("resources/resources.txt");
 
     renderer.init("Game for WSoC", 1280, 720);
-    timeStep = sf::milliseconds(1000 / 60); //60 FPS
+    timeStep = sf::milliseconds(1000 / 60);
 
     pushState(new MenuState);
 
@@ -70,14 +70,11 @@ void Game::run()
         renderer.draw();
 
         profiler.stop();
-        //sf::sleep(timeStep - elapsedTime); //yield rest of time
     }
 }
 
 void Game::handleInput()
 {
-    profiler.start("event handling");
-
     static sf::Event currentEvent;
     while(servLoc.getRender()->getWindow()->pollEvent(currentEvent))
     {
@@ -94,8 +91,6 @@ void Game::handleInput()
 
         servLoc.getProfiler()->stop();
     }
-
-    profiler.stop();
 }
 
 void Game::update(sf::Time elapsedTime)

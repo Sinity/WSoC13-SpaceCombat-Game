@@ -10,6 +10,6 @@ int main()
 	//Run main loop
     game.run();
 
-	return EXIT_SUCCESS;
+    return 0;
 }
 

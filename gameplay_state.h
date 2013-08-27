@@ -15,13 +15,13 @@ public:
 	
     void setLevel(unsigned int levelID);
 
-    Player* getPlayer() { return player; }
+    Player* player = nullptr;
+
 private:
     void updateObjects(sf::Time elapsedTime);
     void resolveCollisions();
     void cleanForces();
 
-	Player* player = nullptr;
 	Sprite* background = nullptr;
 
     std::vector<Level*> levels;

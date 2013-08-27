@@ -3,7 +3,7 @@
 #include "emath.h"
 #include "service_locator.h"
 #include "drawablevector.h"
-#include "bullet.h"
+#include "gun.h"
 
 void Player::updatePosition(sf::Time elapsedTime)
 {
@@ -27,7 +27,8 @@ void Player::calculateAfterburnerForce(bool afterburnerKeyPressed, sf::Time elap
 
 Player::Player(TextureRect data, sf::Vector2f position) :
 	GameObject(data, position, 1),
-    boosterForcePerSecond(1000000000), haltDuration(sf::seconds(0.3f))
+    gun(new Gun(&angle, 10, 10, 500, {50, 50})),
+    boosterForcePerSecond(1000000000)
 {
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
 	mass = 10000;
@@ -35,6 +36,8 @@ Player::Player(TextureRect data, sf::Vector2f position) :
 
 void Player::update(sf::Time elapsedTime)
 {
+    gun->update(elapsedTime);
+
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
         shoot(sf::Vector2f(0, 0));
 		
@@ -45,28 +48,12 @@ void Player::update(sf::Time elapsedTime)
                                      sf::Mouse::getPosition(*servLoc.getRender()->getWindow()));
 
     calculateAngle(elapsedTime, mousePosition);
-
     updatePosition(elapsedTime);
 }
 
 void Player::shoot(sf::Vector2f target)
 {
-    haltAccumulator += clock.restart();
-    if(haltAccumulator > haltDuration)
-    {
-        sf::Vector2f shootDirection((float)sin(ezo::degToRad(angle)),
-                                    (float)-cos(ezo::degToRad(angle)));
-
-        Bullet* b = new Bullet(servLoc.getResourceManager()->getTextureRect("bullet_green"),
-                               sf::Vector2f(representation.getPosition().x + shootDirection.x*representation.getLocalBounds().width,
-                               representation.getPosition().y + shootDirection.y*representation.getLocalBounds().height),
-                               shootDirection, 5000, 1000);
-
-        b->setAngle(this->angle);
-        bullets.push_back(b);
-
-        haltAccumulator = sf::microseconds(0);
-    }
+    gun->shoot(target, representation.getPosition());
 }
 
 void Player::draw(sf::Time t, sf::RenderWindow* r)
@@ -81,5 +68,9 @@ void Player::draw(sf::Time t, sf::RenderWindow* r)
     servLoc.getProfiler()->stop();
 }
 
+Player::~Player()
+{
+    delete gun;
+}
 
 

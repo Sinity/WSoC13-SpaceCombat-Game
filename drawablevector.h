@@ -14,6 +14,7 @@ public:
     
     void x(float x) { vector.x = x; }
     void y(float y) { vector.y = y; } 
+    void xy(sf::Vector2f xy) { vector = xy; }
 private:
     sf::Vector2f vector;
     sf::Vector2f orgin;

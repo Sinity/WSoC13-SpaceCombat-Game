@@ -40,10 +40,7 @@ bool Level::loadFromFile(const char *filename)
             file >> tmp;
             enemyPos.y = atoi(tmp.c_str());
 
-            //LEVEL system IS USED ONLY IN GAMEPLAY STATE, so it's safe
-            GameplayState* state = (GameplayState*)servLoc.getEngine()->states.back();
-
-            enemies.push_back(new Ship(enemyPos, state->getPlayer(), 100, 20, 400, 200));
+            enemies.push_back(new Ship(enemyPos, 100, 400, 200));
         }
         else if(type == "portal")
         {

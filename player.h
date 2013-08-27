@@ -1,12 +1,13 @@
 #pragma once
 #include "game_object.h"
 
-class Bullet;
+class Gun;
 class Player : public GameObject
 {
 public:
 	Player(TextureRect data, sf::Vector2f position);
-	
+    ~Player();
+
 	void draw(sf::Time t, sf::RenderWindow* r);
 	
 	//Physical stuff
@@ -17,12 +18,8 @@ public:
 
     void update(sf::Time elapsedTime);
 
-    std::vector<Bullet*> bullets;
+    Gun* gun = nullptr;
+
 private:
 	unsigned int boosterForcePerSecond;
-
-    //weapon
-    const sf::Time haltDuration;
-    sf::Clock clock;
-    sf::Time haltAccumulator;
 };

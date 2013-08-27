@@ -2,15 +2,12 @@
 #include "service_locator.h"
 #include "emath.h"
 
-Ship::Ship(sf::Vector2f position, Player* player, unsigned int hp, unsigned int attack,
-           unsigned int radarRadious, unsigned int weaponRadious) :
-    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position, player),
-    radarRadious(radarRadious),
-    weaponRadious(weaponRadious)
+Ship::Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, unsigned int weaponRadious) :
+    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position),
+    radarRadious(radarRadious), weaponRadious(weaponRadious)
 {
     this->hp = hp;
     this->fullHP = hp;
-    this->attack = attack;
 }
 
 /*
@@ -26,9 +23,9 @@ Ship::Ship(sf::Vector2f position, Player* player, unsigned int hp, unsigned int 
                stay()
 */
 
-void Ship::updateAI(sf::Time elapsedTime, Player *player)
+void Ship::updateAI(sf::Time elapsedTime)
 {
-    Enemy::updateAI(elapsedTime, player);
+    Enemy::updateAI(elapsedTime);
 
     /*sf::Vector2f playerVec = player->getPosition() - this->getPosition();
     unsigned int playerVecLength = (int)ezo::vecLength(playerVec.x, playerVec.y);

@@ -4,9 +4,9 @@
 class Ship : public Enemy
 {
 public:
-    Ship(sf::Vector2f position, Player* player, unsigned int hp, unsigned int attack, unsigned int radarRadious, unsigned int weaponRadious);
+    Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, unsigned int weaponRadious);
 
-    void updateAI(sf::Time elapsedTime, Player* player);
+    void updateAI(sf::Time elapsedTime);
 private:
     unsigned int radarRadious;
     unsigned int weaponRadious;
@@ -15,9 +15,9 @@ private:
     {
         chase,
         stay,
-        shoot,
+        fire,
         escape
-    }state = stay;
+    } state = stay;
 
 };
 

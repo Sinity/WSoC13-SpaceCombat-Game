@@ -6,31 +6,15 @@
 #include "ingamemenustate.h"
 #include "enemy.h"
 #include "player.h"
+#include "gun.h"
 #include "bullet.h"
 #include "portal.h"
-
-GameplayState::~GameplayState()
-{
-	delete background;
-	delete player;
-    delete currentLevel;
-
-    servLoc.getLogger()->log(POS, "Gameplay state destroyed");
-}
-
-void GameplayState::handleInput(sf::Event event)
-{
-    if(event.type == sf::Event::KeyPressed)
-        if(event.key.code == sf::Keyboard::Escape)
-            servLoc.getEngine()->pushState(new IngameMenuState());
-}
 
 GameplayState::GameplayState()
 {	
     background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0}, 0);
     player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
     setLevel(1);
-
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
 }
 
@@ -44,7 +28,7 @@ void GameplayState::update(sf::Time elapsedTime)
     cleanForces();
 
 	if(!player->exist)
-	{
+    {//                  TODO SWITCH TO GAMEOVER STATE HERE
         servLoc.getLogger()->log(POS, "Player doesn't exist(destroyed?).");
 		servLoc.getEngine()->popState();
 		return;
@@ -62,13 +46,10 @@ void GameplayState::setLevel(unsigned int levelID)
     if(currentLevel != nullptr)
     {
         for(Enemy* e : currentLevel->enemies)
-            servLoc.getRender()->removeObj(e);
-        for(Portal* p : currentLevel->portals)
-            servLoc.getRender()->removeObj(p);
-
-        for(Enemy* e : currentLevel->enemies)
+            servLoc.getRender()->removeObj(e),
             servLoc.getRender()->removeObj(&e->representation);
         for(Portal* p : currentLevel->portals)
+            servLoc.getRender()->removeObj(p),
             servLoc.getRender()->removeObj(&p->representation);
     }
     //check if file is alredy loaded
@@ -79,13 +60,11 @@ void GameplayState::setLevel(unsigned int levelID)
 
             //restore objects
             for(Enemy* e : currentLevel->enemies)
-                servLoc.getRender()->addObj(e);
-            for(Portal* p : currentLevel->portals)
-                servLoc.getRender()->addObj(p);
-
-            for(Enemy* e : currentLevel->enemies)
+                servLoc.getRender()->addObj(e),
                 servLoc.getRender()->addObj(&e->representation);
+
             for(Portal* p : currentLevel->portals)
+                servLoc.getRender()->addObj(p),
                 servLoc.getRender()->addObj(&p->representation);
 
             player->representation.setPosition(currentLevel->startPos);
@@ -97,13 +76,12 @@ void GameplayState::setLevel(unsigned int levelID)
     newLevel->loadFromFile(ezo::string::format("levels/%u.txt", levelID).c());
     levels.emplace_back(newLevel);
     currentLevel = newLevel;
+
     player->representation.setPosition(currentLevel->startPos);
 }
 
 void GameplayState::updateObjects(sf::Time elapsedTime)
 {
-    for(auto bullet : player->bullets)
-        bullet->update(elapsedTime);
     player->update(elapsedTime);
     for(Enemy* enemy : currentLevel->enemies)
         enemy->update(elapsedTime);
@@ -111,22 +89,25 @@ void GameplayState::updateObjects(sf::Time elapsedTime)
 
 void GameplayState::resolveCollisions()
 {
+    //player, portal -> change level
     for(auto portal : currentLevel->portals)
         if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), portal->representation.getSFMLSprite()))
             setLevel(portal->destinationID);
 
-    for(auto playerBullet : player->bullets)
+    //player bullet, enemy -> hit enemy, destroy bullet
+    for(auto playerBullet : player->gun->bullets)
         for(Enemy* enemy : currentLevel->enemies)
             if(Collision::PixelPerfectTest(playerBullet->representation.getSFMLSprite(), enemy->representation.getSFMLSprite()))
             {
                 enemy->hit(playerBullet->attack);
                 playerBullet->destroy();
 
-                //enemy->setPosition(enemy->oldPosition);
+                //enemy->setPosition(enemy->oldPosition); TODO set small mass  in bullet and enable it.
                 //todo: implement better solution(using good equation(this including mass))
                 //enemy->velocity = playerBullet->velocity; //bounce from colliding object
             }
 
+    //enemy, player -> bounce
     for(Enemy* enemy : currentLevel->enemies)
             if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), enemy->representation.getSFMLSprite()))
             {   
@@ -142,6 +123,7 @@ void GameplayState::resolveCollisions()
                 break;
             }
 
+    //enemy, enemy -> bounce
     for(Enemy* enemy1 : currentLevel->enemies)
         for(Enemy* enemy2 : currentLevel->enemies)
             if(enemy1 != enemy2 && Collision::PixelPerfectTest(enemy1->representation.getSFMLSprite(), enemy2->representation.getSFMLSprite()))
@@ -161,22 +143,33 @@ void GameplayState::resolveCollisions()
 void GameplayState::cleanForces()
 {
     player->resultantForce = {0.f, 0.f};
-    for(auto playerBullet : player->bullets)
+    for(auto playerBullet : player->gun->bullets)
         playerBullet-> resultantForce = {0.f, 0.f};
+
     for(Enemy* enemy : currentLevel->enemies)
         enemy->resultantForce = {0.f, 0.f};
 
     //delete destroyed objects
-    for(unsigned int i = 0; i < player->bullets.size(); i++)
-        if(!player->bullets[i]->exist)
-        {
-            delete player->bullets[i];
-            player->bullets.erase(player->bullets.begin()+i);
-        }
     for(unsigned int i = 0; i < currentLevel->enemies.size(); i++)
         if(!currentLevel->enemies[i]->exist)
         {
             delete currentLevel->enemies[i];
             currentLevel->enemies.erase(currentLevel->enemies.begin()+i);
         }
+}
+
+void GameplayState::handleInput(sf::Event event)
+{
+    if(event.type == sf::Event::KeyPressed)
+        if(event.key.code == sf::Keyboard::Escape)
+            servLoc.getEngine()->pushState(new IngameMenuState());
+}
+
+GameplayState::~GameplayState()
+{
+    delete background;
+    delete player;
+    delete currentLevel;
+
+    servLoc.getLogger()->log(POS, "Gameplay state destroyed");
 }
