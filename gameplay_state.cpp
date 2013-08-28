@@ -107,6 +107,15 @@ void GameplayState::resolveCollisions()
                 //enemy->velocity = playerBullet->velocity; //bounce from colliding object
             }
 
+    //enemies bullets, player -> hit player
+    for(auto enemy : currentLevel->enemies)
+        for(auto enemyBullet : enemy->gun->bullets)
+            if(Collision::PixelPerfectTest(enemyBullet->representation.getSFMLSprite(), player->representation.getSFMLSprite()))
+            {
+                player->hit(enemyBullet->attack);
+                enemyBullet->destroy();
+            }
+
     //enemy, player -> bounce
     for(Enemy* enemy : currentLevel->enemies)
             if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), enemy->representation.getSFMLSprite()))

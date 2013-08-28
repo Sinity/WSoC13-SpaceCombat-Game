@@ -3,7 +3,7 @@
 #include "emath.h"
 
 Ship::Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, unsigned int weaponRadious) :
-    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position, 1, 5, weaponRadious, 500, 100000000, 10000, 2),
+    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position, 1, 5, weaponRadious, 600, 100000000, 10000, 2),
     radarRadious(radarRadious), weaponRadious(weaponRadious)
 {
     this->hp = hp;

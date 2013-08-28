@@ -18,6 +18,9 @@ Player::Player(TextureRect data, sf::Vector2f position) :
     gun(new Gun(&angle, 10, 1, 500, {50, 50})),
     engine(new Engine(&angle, 1000000000))
 {
+    hp = 100;
+    fullHP = hp;
+
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
 	mass = 10000;
 }
