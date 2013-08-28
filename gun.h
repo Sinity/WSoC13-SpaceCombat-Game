@@ -28,5 +28,5 @@ private:
 
     int attack;
     unsigned int speed;
-    float range;
+    unsigned int range;
 };

@@ -3,16 +3,18 @@
 
 class Player;
 class Gun;
+class Engine;
 class Enemy : public GameObject
 {
 public:
-    Enemy(TextureRect image, sf::Vector2f pos);
+    Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned int rateOfFire,
+          unsigned int attackRange, unsigned int bulletsSpeed, unsigned int boosterForce,
+          float mass, int hp);
     virtual ~Enemy();
 
     virtual void update(sf::Time elapsedTime);
 
 	virtual void updatePosition(sf::Time elapsedTime);
-	virtual void calculateAfterburnerForce(sf::Time elapsedTime);
 
     virtual void updateAI(sf::Time elapsedTime);
 
@@ -22,7 +24,7 @@ public:
 protected:
 	//booster stuff
 	bool afterburnerActive = true;
-	unsigned int boosterForcePerSecond = 100000000;
+    Engine* engine;
 	
     //ai stuff
 	sf::Vector2f destination;

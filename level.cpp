@@ -40,7 +40,7 @@ bool Level::loadFromFile(const char *filename)
             file >> tmp;
             enemyPos.y = atoi(tmp.c_str());
 
-            enemies.push_back(new Ship(enemyPos, 100, 400, 200));
+            enemies.push_back(new Ship(enemyPos, 5, 400, 200));
         }
         else if(type == "portal")
         {
