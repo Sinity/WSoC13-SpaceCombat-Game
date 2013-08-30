@@ -12,12 +12,14 @@ Enemy::Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned 
              float mass, int hp) :
     GameObject(image, pos, 1),
     gun(new Gun(&angle, rateOfFire, attack, attackRange, {50, 50}, bulletsSpeed)),
-    engine(new Engine(&angle, boosterForce))
+    engine(new Engine(&angle, &velocity, boosterForce))
 {
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
     this->hp = hp;
     fullHP = hp;
     this->mass = mass;
+
+    engine->setMode(EngineMode::Break);
 }
 
 Enemy::~Enemy()
@@ -35,17 +37,16 @@ void Enemy::update(sf::Time elapsedTime)
 
 void Enemy::updatePosition(sf::Time elapsedTime)
 {
-    calculateAngle(elapsedTime, destination);
-    if(afterburnerActive)
-        addForce(engine->calculateAfterburnerForce(elapsedTime));
+    calculateAngle(elapsedTime, target);
+    addForce(engine->calculateForce(elapsedTime));
     GameObject::updatePosition(elapsedTime);
 }
 
 void Enemy::updateAI(sf::Time elapsedTime)
 {
     GameplayState* state = (GameplayState*)servLoc.getEngine()->states.back();
-    destination = state->player->representation.getPosition();
-    fire(destination);
+    target = state->player->representation.getPosition();
+    fire(target);
 }
 
 void Enemy::fire(sf::Vector2f target)

@@ -13,19 +13,13 @@ public:
     virtual ~Enemy();
 
     virtual void update(sf::Time elapsedTime);
-
 	virtual void updatePosition(sf::Time elapsedTime);
-
     virtual void updateAI(sf::Time elapsedTime);
 
     void fire(sf::Vector2f target);
     Gun* gun;
 
 protected:
-	//booster stuff
-	bool afterburnerActive = true;
     Engine* engine;
-	
-    //ai stuff
-	sf::Vector2f destination;
+    sf::Vector2f target;
 };
