@@ -1,11 +1,11 @@
 #pragma once
 #include "sprite.h"
 
-class GameObject : public Drawable
+class GameObject
 {
 public:
 	GameObject(TextureRect texrect, sf::Vector2f position, unsigned int level);
-    ~GameObject();
+    virtual ~GameObject(){}
 
     virtual void update(sf::Time elapsedTime);
 
@@ -20,7 +20,6 @@ public:
 	
     bool exist = true;
 
-    virtual void draw(sf::Time timeSinceLastDrawing, sf::RenderWindow* window);
     Sprite representation;
 protected:
     unsigned int hp = 1;

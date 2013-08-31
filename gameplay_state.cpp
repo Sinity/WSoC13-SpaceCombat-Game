@@ -46,10 +46,8 @@ void GameplayState::setLevel(unsigned int levelID)
     if(currentLevel != nullptr)
     {
         for(Enemy* e : currentLevel->enemies)
-            servLoc.getRender()->removeObj(e),
             servLoc.getRender()->removeObj(&e->representation);
         for(Portal* p : currentLevel->portals)
-            servLoc.getRender()->removeObj(p),
             servLoc.getRender()->removeObj(&p->representation);
     }
     //check if file is alredy loaded
@@ -60,11 +58,9 @@ void GameplayState::setLevel(unsigned int levelID)
 
             //restore objects
             for(Enemy* e : currentLevel->enemies)
-                servLoc.getRender()->addObj(e),
                 servLoc.getRender()->addObj(&e->representation);
 
             for(Portal* p : currentLevel->portals)
-                servLoc.getRender()->addObj(p),
                 servLoc.getRender()->addObj(&p->representation);
 
             player->representation.setPosition(currentLevel->startPos);

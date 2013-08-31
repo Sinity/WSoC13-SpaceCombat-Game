@@ -3,11 +3,8 @@
 #include "ezolib.h"
 
 GameObject::GameObject(TextureRect texrect, sf::Vector2f position, unsigned int level) :
-    Drawable(level),
     representation(texrect, position, level)
-{
-    servLoc.getRender()->addObj(this);
-}
+{}
 
 void GameObject::updatePosition(sf::Time elapsedTime)
 {
@@ -40,18 +37,8 @@ void GameObject::hit(unsigned int _hp)
 
 void GameObject::destroy()
 {
-    servLoc.getRender()->removeObj(this);
     servLoc.getRender()->removeObj(&representation);
     exist = false;
-}
-
-GameObject::~GameObject()
-{
-    servLoc.getRender()->removeObj(this);
-}
-
-void GameObject::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
-{
 }
 
 void GameObject::calculateAngle(sf::Time elapsedTime, sf::Vector2f target)

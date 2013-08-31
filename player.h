@@ -3,6 +3,7 @@
 
 class Gun;
 class Engine;
+class DrawableVector;
 class Player : public GameObject
 {
 public:
@@ -10,7 +11,6 @@ public:
     ~Player();
     void update(sf::Time elapsedTime);
 
-	void draw(sf::Time t, sf::RenderWindow* r);
 	void updatePosition(sf::Time elapsedTime);
     void shoot(sf::Vector2f target);
 
@@ -18,4 +18,5 @@ public:
 
 private:
     Engine* engine = nullptr;
+    DrawableVector* velocityVec;
 };

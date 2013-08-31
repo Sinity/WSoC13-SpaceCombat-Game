@@ -4,17 +4,11 @@
 #include "gun.h"
 #include "engine.h"
 
-void Player::updatePosition(sf::Time elapsedTime)
-{
-    addForce(engine->calculateForce(elapsedTime));
-    GameObject::updatePosition(elapsedTime);
-    representation.setPosition(representation.getPosition());
-}
-
 Player::Player(TextureRect data, sf::Vector2f position) :
 	GameObject(data, position, 1),
     gun(new Gun(&angle, 10, 1, 500, {50, 50})),
-    engine(new Engine(&angle, &velocity, 1000000000))
+    engine(new Engine(&angle, &velocity, 1000000000)),
+    velocityVec(new DrawableVector({0.f, 0.f}, {0.f, 0.f}, sf::Color::Green))
 {
     hp = 100;
     fullHP = hp;
@@ -41,23 +35,21 @@ void Player::update(sf::Time elapsedTime)
                                      sf::Mouse::getPosition(*servLoc.getRender()->getWindow()));
     calculateAngle(elapsedTime, mousePosition);
     updatePosition(elapsedTime);
+
+    velocityVec->xy(velocity+representation.getPosition());
+    velocityVec->setOrgin(representation.getPosition());
+}
+
+void Player::updatePosition(sf::Time elapsedTime)
+{
+    addForce(engine->calculateForce(elapsedTime));
+    GameObject::updatePosition(elapsedTime);
+    representation.setPosition(representation.getPosition());
 }
 
 void Player::shoot(sf::Vector2f target)
 {
     gun->shoot(target, representation.getPosition());
-}
-
-void Player::draw(sf::Time t, sf::RenderWindow* r)
-{
-    servLoc.getProfiler()->start("drawing player");
-
-	GameObject::draw(t, r);
-	
-    DrawableVector velocityVec(velocity+representation.getPosition(), representation.getPosition());
-    velocityVec.draw(t, r);
-
-    servLoc.getProfiler()->stop();
 }
 
 Player::~Player()
