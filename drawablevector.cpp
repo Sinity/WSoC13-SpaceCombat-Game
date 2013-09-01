@@ -16,10 +16,5 @@ DrawableVector::~DrawableVector()
 
 void DrawableVector::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow* window)
 { 
-    sf::Vertex line[] =
-    {
-		sf::Vertex(sf::Vector2f(orgin.x, orgin.y), this->color),
-		sf::Vertex(sf::Vector2f(vector.x, vector.y), this->color)
-    };
     window->draw(line, 2, sf::Lines);
 }

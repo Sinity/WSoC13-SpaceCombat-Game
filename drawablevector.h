@@ -11,13 +11,19 @@ public:
 
     void draw(sf::Time timeSinceLastDrawing, sf::RenderWindow* window);   
 	
-    void setOrgin(sf::Vector2f org) { orgin = org; }
-    void setColor(sf::Color color) { this->color = color; }
-    void x(float x) { vector.x = x; }
-    void y(float y) { vector.y = y; } 
-    void xy(sf::Vector2f xy) { vector = xy; }
+    void setOrgin(sf::Vector2f org) { orgin = org; updateRepr();}
+    void setColor(sf::Color color) { this->color = color; updateRepr();}
+    void x(float x) { vector.x = x; updateRepr();}
+    void y(float y) { vector.y = y; updateRepr();}
+    void xy(sf::Vector2f xy) { vector = xy; updateRepr();}
 private:
     sf::Vector2f vector;
     sf::Vector2f orgin;
     sf::Color color;
+    sf::Vertex line[2];
+    void updateRepr()
+    {
+        line[0] =  sf::Vertex(sf::Vector2f(orgin.x, orgin.y), this->color);
+        line[1] =  sf::Vertex(sf::Vector2f(vector.x, vector.y), this->color);
+    }
 };

@@ -25,6 +25,7 @@ Enemy::Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned 
 Enemy::~Enemy()
 {
     delete gun;
+    delete engine;
 }
 
 void Enemy::update(sf::Time elapsedTime)

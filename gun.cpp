@@ -15,7 +15,7 @@ Gun::Gun(const float* baseAngle, float shootsPerSecond, int attack, float range,
 Gun::~Gun()
 {
     for(auto bullet : bullets)
-        bullet->destroy();
+        delete bullet;
 }
 
 void Gun::shoot(sf::Vector2f target, sf::Vector2f basePosition)

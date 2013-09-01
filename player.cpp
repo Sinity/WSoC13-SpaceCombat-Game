@@ -56,6 +56,7 @@ Player::~Player()
 {
     delete gun;
     delete engine;
+    delete velocityVec;
 }
 
 

@@ -174,7 +174,7 @@ GameplayState::~GameplayState()
 {
     delete background;
     delete player;
-    delete currentLevel;
-
+    for(auto level : levels)
+        delete level;
     servLoc.getLogger()->log(POS, "Gameplay state destroyed");
 }

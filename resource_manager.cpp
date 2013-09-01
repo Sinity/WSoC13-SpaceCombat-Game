@@ -1,4 +1,4 @@
-#include "resource_manager.h"
+﻿#include "resource_manager.h"
 #include "service_locator.h"
 #include "ezolib.h"
 #include <fstream>
@@ -7,24 +7,18 @@
 
 bool ResourceManager::loadTexture(const char* filename, const char* tex_name) 
 {
-    std::string fname = filename;
-    std::string tname = tex_name;
-    sf::Texture tex;
-
-    if (Collision::CreateTextureAndBitmask(tex, fname))
+    if (Collision::CreateTextureAndBitmask(textures[tex_name], filename))
 	{
-        textures[tname] = tex;
         servLoc.getLogger()->log(POS, (char*)ezo::string::format("Texture %s loaded properly", tex_name));
         return true;
     }
 
-    //create placeholder with arbitrary size filled with white.
-    tex.create(100, 100);
+    //create placeholder with arbitrary size filled with black.
+    textures[tex_name].create(100, 100);
     unsigned char* pixels = new unsigned char[100*100*4];
     for(int i = 0; i < 100*100*4; i++)
-        pixels[i] = 0xFF;
-    tex.loadFromMemory(pixels, 100*100*4);
-    textures[tname] = tex;
+        pixels[i] = 0x00;
+    textures[tex_name].loadFromMemory(pixels, 100*100*4);
     delete[] pixels;
 
     servLoc.getLogger()->log(POS, (char*)ezo::string::format("Failed to load texture %s!", tex_name),
@@ -36,13 +30,16 @@ bool ResourceManager::loadTextures(const char* filename)
 {
     std::fstream file;
     file.open(filename, std::ios::in);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         servLoc.getLogger()->log(POS, (char*)ezo::string::format("Can't open file %s!!!", filename),
                 LogType::Fatal, LogOutput::TxtFileAndConsole);
         return false;
     }
+
     std::string fname, texname;
-    while (!file.eof()) {
+    while (!file.eof())
+    {
         file >> texname >> fname;
         bool state = loadTexture(fname.c_str(), texname.c_str());
         if (!state)
@@ -59,7 +56,8 @@ bool ResourceManager::loadResources(const char* filename)
 
     //open file
     file.open(filename, std::ios::in);
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         servLoc.getLogger()->log(POS, (char*)ezo::string::format("Can't open file %s!!!", filename),
                  LogType::Fatal, LogOutput::TxtFileAndConsole);
         return false;

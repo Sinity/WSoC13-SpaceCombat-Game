@@ -8,7 +8,7 @@ class Renderer
 public:
 	//if resolution was not specified, window will be fullscreen 
 	void init(const char* winTitle = "", unsigned int resX = 0, unsigned int resY = 0);
-
+    ~Renderer(){ delete drawList; }
 	void draw();
 
 	void addObj(Drawable* obj);

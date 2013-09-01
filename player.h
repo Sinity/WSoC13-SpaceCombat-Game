@@ -18,5 +18,5 @@ public:
 
 private:
     Engine* engine = nullptr;
-    DrawableVector* velocityVec;
+    DrawableVector* velocityVec = nullptr;
 };
