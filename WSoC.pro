@@ -4,14 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG += c++11
 
-INCLUDEPATH += E:/dev/libs/SFML-2.0/include
-INCLUDEPATH += E:\dev\src\projects\ezolib\ezolib
+INCLUDEPATH += /home/sinity/dev/ezolib/ezolib
 
-LIBS += E:/dev/libs/SFML-2.0/lib\libsfml-system-d.a \
-    E:/dev/libs/SFML-2.0/lib\libsfml-window-d.a \
-    E:/dev/libs/SFML-2.0/lib\libsfml-graphics-d.a \
-    E:/dev/libs/SFML-2.0/lib\libsfml-audio-d.a \
-    E:/dev/libs/SFML-2.0/lib\libsfml-network-d.a
+LIBS += /usr/lib/libsfml-graphics.so \
+        /usr/lib/libsfml-window.so \
+        /usr/lib/libsfml-system.so \
+        /usr/lib/libsfml-audio.so \
+        /usr/lib/libsfml-network.so
 
 SOURCES += \
     sprite.cpp \
@@ -34,9 +33,9 @@ SOURCES += \
     game_state.cpp \
     portal.cpp \
     ship.cpp \
-    ../../EzoLib/Ezolib/logger.cpp \
-    ../../EzoLib/Ezolib/estring.cpp \
-    ../../EzoLib/Ezolib/emath.cpp \
+    /home/sinity/dev/ezolib/ezolib/logger.cpp \
+    /home/sinity/dev/ezolib/ezolib/estring.cpp \
+    /home/sinity/dev/ezolib/ezolib/emath.cpp \
     gun.cpp \
     engine.cpp
 
@@ -62,10 +61,5 @@ HEADERS += \
     level.h \
     portal.h \
     ship.h \
-    ../../EzoLib/Ezolib/object.h \
-    ../../EzoLib/Ezolib/logger.h \
-    ../../EzoLib/Ezolib/ezolib.h \
-    ../../EzoLib/Ezolib/estring.h \
-    ../../EzoLib/Ezolib/emath.h \
     gun.h \
     engine.h

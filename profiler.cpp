@@ -39,8 +39,8 @@ std::string Profile::calculateResults(unsigned int depth)
     //calculate min, max, average and total
     sf::Time avg, min, max, total;
     avg = sf::milliseconds(0);
-    min = sf::milliseconds(INT_MAX);
-    max = sf::milliseconds(INT_MIN);
+    min = sf::milliseconds(__INT32_MAX__);
+    max = sf::milliseconds(__INT32_MAX__);
     total = sf::milliseconds(0);
     for(unsigned int i = 0; i < samples.size(); i++)
     {
