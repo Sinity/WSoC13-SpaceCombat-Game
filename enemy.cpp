@@ -31,14 +31,13 @@ Enemy::~Enemy()
 void Enemy::update(sf::Time elapsedTime)
 {
     gun->update(elapsedTime);
-
     updateAI(elapsedTime);
     updatePosition(elapsedTime);
 }
 
 void Enemy::updatePosition(sf::Time elapsedTime)
 {
-    calculateAngle(elapsedTime, target);
+    calculateAngle(elapsedTime, target, flee);
     addForce(engine->calculateForce(elapsedTime));
     GameObject::updatePosition(elapsedTime);
 }
@@ -47,10 +46,49 @@ void Enemy::updateAI(sf::Time elapsedTime)
 {
     GameplayState* state = (GameplayState*)servLoc.getEngine()->states.back();
     target = state->player->representation.getPosition();
-    fire(target);
+    updateSteering(elapsedTime);
 }
 
-void Enemy::fire(sf::Vector2f target)
+void Enemy::fire()
 {
-    gun->shoot(target, representation.getPosition());
+    gun->shoot(representation.getPosition());
+}
+
+void Enemy::updateSteering(sf::Time elapsedTime)
+{
+    switch(steeringMode)
+    {
+    case SteeringMode::None:
+        return;
+    case SteeringMode::Stay:
+        engine->setMode(EngineMode::Break);
+        return;
+    case SteeringMode::Seek:
+    {
+        sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
+        float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
+        sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
+        float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
+        if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
+        if(ezo::floatInRange(targetAngle, angle, 5.0f))
+            engine->setMode(EngineMode::Accelerate);
+        else
+            engine->setMode(EngineMode::Break);
+        break;
+    }
+    case SteeringMode::Flee:
+    {
+        sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
+        float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
+        sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
+        float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
+        if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
+        flee = true;
+        if(ezo::floatInRange(targetAngle, angle, 30.0f))
+            engine->setMode(EngineMode::Break);
+        else
+            engine->setMode(EngineMode::Accelerate);
+        break;
+    }
+    }
 }

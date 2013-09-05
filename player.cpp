@@ -5,7 +5,7 @@
 #include "engine.h"
 
 Player::Player(TextureRect data, sf::Vector2f position) :
-	GameObject(data, position, 1),
+    GameObject(data, position, 1),
     gun(new Gun(&angle, 10, 1, 500, {50, 50})),
     engine(new Engine(&angle, &velocity, 1000000000)),
     velocityVec(new DrawableVector({0.f, 0.f}, {0.f, 0.f}, sf::Color::Green))
@@ -21,7 +21,7 @@ void Player::update(sf::Time elapsedTime)
 {
     gun->update(elapsedTime);
 
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
         shoot(sf::Vector2f(0, 0));
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -33,7 +33,7 @@ void Player::update(sf::Time elapsedTime)
 
     sf::Vector2f mousePosition = servLoc.getRender()->getWindow()->mapPixelToCoords(
                                      sf::Mouse::getPosition(*servLoc.getRender()->getWindow()));
-    calculateAngle(elapsedTime, mousePosition);
+    calculateAngle(elapsedTime, mousePosition, false);
     updatePosition(elapsedTime);
 
     velocityVec->xy(velocity+representation.getPosition());
@@ -49,7 +49,7 @@ void Player::updatePosition(sf::Time elapsedTime)
 
 void Player::shoot(sf::Vector2f target)
 {
-    gun->shoot(target, representation.getPosition());
+    gun->shoot(representation.getPosition());
 }
 
 Player::~Player()

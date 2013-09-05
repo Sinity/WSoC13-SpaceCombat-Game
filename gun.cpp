@@ -18,7 +18,7 @@ Gun::~Gun()
         delete bullet;
 }
 
-void Gun::shoot(sf::Vector2f target, sf::Vector2f basePosition)
+void Gun::shoot(sf::Vector2f basePosition)
 {
     haltAccumulator += clock.restart();
     if(haltAccumulator > haltDuration)

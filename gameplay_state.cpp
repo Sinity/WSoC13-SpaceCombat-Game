@@ -11,7 +11,7 @@
 #include "portal.h"
 
 GameplayState::GameplayState()
-{	
+{
     background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0}, 0);
     player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
     setLevel(1);
@@ -27,15 +27,15 @@ void GameplayState::update(sf::Time elapsedTime)
     resolveCollisions();
     cleanForces();
 
-	if(!player->exist)
+    if(!player->exist)
     {//                  TODO SWITCH TO GAMEOVER STATE HERE
         servLoc.getLogger()->log(POS, "Player doesn't exist(destroyed?).");
-		servLoc.getEngine()->popState();
-		return;
-	}
-		
+        servLoc.getEngine()->popState();
+        return;
+    }
+
     sf::View view(player->representation.getPosition(), servLoc.getRender()->getWindow()->getDefaultView().getSize());
-	servLoc.getRender()->getWindow()->setView(view);
+    servLoc.getRender()->getWindow()->setView(view);
 
     servLoc.getProfiler()->stop();
 }
@@ -115,7 +115,7 @@ void GameplayState::resolveCollisions()
     //enemy, player -> bounce
     for(Enemy* enemy : currentLevel->enemies)
             if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), enemy->representation.getSFMLSprite()))
-            {   
+            {
                 enemy->representation.setPosition(enemy->oldPosition);
                 //todo: implement better solution(using good equation(this including mass))
                 sf::Vector2f tempVel = enemy->velocity;

@@ -11,12 +11,13 @@ public:
         sf::Vector2f differencePosition = {0, 0}, unsigned int speed = 2100, float differenceAngle = 0);
     ~Gun();
 
-    void shoot(sf::Vector2f target, sf::Vector2f basePosition);
+    void shoot(sf::Vector2f basePosition);
     void update(sf::Time elapsedTime);
 
     std::vector<Bullet*> bullets;
 
 private:
+    sf::Vector2f* position;
     sf::Vector2f diffPosition;
 
     const float* baseAngle;

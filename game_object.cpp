@@ -9,30 +9,30 @@ GameObject::GameObject(TextureRect texrect, sf::Vector2f position, unsigned int 
 void GameObject::updatePosition(sf::Time elapsedTime)
 {
     sf::Vector2f acceleration(resultantForce.x / mass, resultantForce.y / mass);
-	
+
     //calculate velocity
     sf::Vector2f newVelocity = velocity + acceleration*elapsedTime.asSeconds();
-	float newVelocityLen = ezo::vecLength(newVelocity.x, newVelocity.y);
-	if(newVelocityLen > maxVelocity)
+    float newVelocityLen = ezo::vecLength(newVelocity.x, newVelocity.y);
+    if(newVelocityLen > maxVelocity)
         velocity = {newVelocity.x/newVelocityLen*maxVelocity, newVelocity.y/newVelocityLen*maxVelocity};
-	else
-		velocity = newVelocity;
-		
+    else
+        velocity = newVelocity;
+
     oldPosition = representation.getPosition();
     representation.setPosition(representation.getPosition() + velocity*elapsedTime.asSeconds());
 }
 
 void GameObject::addForce(sf::Vector2f f)
 {
-	resultantForce += f;
+    resultantForce += f;
 }
 
 void GameObject::hit(unsigned int _hp)
 {
-	if(_hp > hp)
-		destroy();
-	else
-		hp -= _hp;
+    if(_hp > hp)
+        destroy();
+    else
+        hp -= _hp;
 }
 
 void GameObject::destroy()
@@ -41,12 +41,13 @@ void GameObject::destroy()
     exist = false;
 }
 
-void GameObject::calculateAngle(sf::Time elapsedTime, sf::Vector2f target)
+void GameObject::calculateAngle(sf::Time elapsedTime, sf::Vector2f target, bool neg)
 {
-    float maxDelta = this->deltaAngle * elapsedTime.asSeconds();
+    const float maxDelta = this->deltaAngle * elapsedTime.asSeconds();
 
     float newAngle = (float)-(atan2(representation.getPosition().x - target.x, representation.getPosition().y - target.y));
     newAngle = ezo::radToDeg(newAngle);
+    if(neg) newAngle -= 180.f;
     if(newAngle < 0) newAngle += 360;
 
     float dAngle = newAngle - angle;
