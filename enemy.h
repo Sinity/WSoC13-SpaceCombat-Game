@@ -19,16 +19,17 @@ public:
     void fire();
     Gun* gun;
 
+    void seek();
+    void flee();
 protected:
     enum class SteeringMode {
         None,
         Stay,
         Seek,
-        Arive,
         Flee
-    } steeringMode = SteeringMode::Flee;
+    } steeringMode = SteeringMode::None;
     sf::Vector2f target;
-    bool flee = false;
+    bool fleeFlag = false;
     void updateSteering(sf::Time elapsedTime);
 
     Engine* engine;

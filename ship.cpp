@@ -2,79 +2,66 @@
 #include "service_locator.h"
 #include "emath.h"
 
-Ship::Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, unsigned int weaponRadious) :
-    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position, 1, 5, weaponRadious, 600, 100000000, 10000, 2),
+Ship::Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, unsigned int weaponRadious, unsigned int attack, unsigned int rateOfFire, float mass,
+           unsigned int speed) :
+    Enemy(servLoc.getResourceManager()->getTextureRect("ship"), position, attack, rateOfFire, weaponRadious, 6666, speed, mass, hp),
     radarRadious(radarRadious), weaponRadious(weaponRadious)
 {
     this->hp = hp;
     this->fullHP = hp;
 }
 
-/*
- *     if can see player
-          if hp < 50%
-               if rand(1, 100-hp) > 50
-                  escape()
-           else if can hit player ( range of weapon is sufficient )
-                activateGun()
-           else
-                chase()
-         else
-               stay()
-*/
-
 void Ship::updateAI(sf::Time elapsedTime)
 {
     Enemy::updateAI(elapsedTime);
 
-    /*sf::Vector2f playerVec = player->getPosition() - this->getPosition();
-    unsigned int playerVecLength = (int)ezo::vecLength(playerVec.x, playerVec.y);
+    sf::Vector2f targetVec = target - representation.getPosition();
+    float targetVecLen = ezo::vecLength(targetVec.x, targetVec.y);
 
     switch(state)
     {
-    case stay:
-        if(radarRadious > playerVecLength)
+    case State::stay:
+        printf("stay\n");
+        if(targetVecLen < radarRadious)
         {
-            if(hp < fullHP / 2)
-            {
-                if(rand()%(100-hp) > 50)
-                    state = escape;
-            }
-            else if(weaponRadious > playerVecLength)
-                state = shoot;
+            if(hp < fullHP/2)
+                state = State::escape;
+            else if(targetVecLen < weaponRadious)
+                state = State::fire;
             else
-                state = chase;
-
+                state = State::chase;
         }
         else
-        {
-            afterburnerActive = false;
-        }
+            steeringMode = SteeringMode::Stay;
         break;
-    case escape:
-        if(radarRadious < playerVecLength)
-            state = stay;
+    case State::escape:
+        printf("escape\n");
+        if(targetVecLen > radarRadious)
+            state = State::stay;
+        steeringMode = SteeringMode::Flee;
+        break;
+    case State::chase:
+        printf("chase\n");
+        if(targetVecLen > radarRadious)
+            state = State::stay;
+        else if(hp < fullHP/2)
+            state = State::escape;
+        else if(targetVecLen < weaponRadious)
+            state = State::fire;
         else
-        {
-            calculateAngle(elapsedTime, -player->getPosition());
-            afterburnerActive = true;
-        }
+            steeringMode = SteeringMode::Seek;
         break;
-    case shoot:
-        if(hp < fullHP / 2)
-            state = escape;
-        else if(radarRadious < playerVecLength)
-            state = stay;
+    case State::fire:
+        printf("fire\n");
+        if(targetVecLen > radarRadious)
+            state = State::stay;
+        else if(hp < fullHP/2)
+            state = State::escape;
+        else if(targetVecLen > weaponRadious)
+            state = State::chase;
         else
-            Enemy::shoot({0, 0});
+            steeringMode = SteeringMode::Stay;
+            fire();
         break;
-    case chase:
-        if(radarRadious < playerVecLength)
-            state = stay;
-        else if(weaponRadious > playerVecLength)
-            state = shoot;
-        else
-            calculateAngle(elapsedTime, player->getPosition());
-        break;
-    }*/
+    }
 }

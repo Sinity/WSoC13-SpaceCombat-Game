@@ -37,7 +37,7 @@ void Enemy::update(sf::Time elapsedTime)
 
 void Enemy::updatePosition(sf::Time elapsedTime)
 {
-    calculateAngle(elapsedTime, target, flee);
+    calculateAngle(elapsedTime, target, fleeFlag);
     addForce(engine->calculateForce(elapsedTime));
     GameObject::updatePosition(elapsedTime);
 }
@@ -54,6 +54,33 @@ void Enemy::fire()
     gun->shoot(representation.getPosition());
 }
 
+void Enemy::seek()
+{
+    sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
+    float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
+    sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
+    float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
+    if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
+    if(ezo::floatInRange(targetAngle, angle, 5.0f))
+        engine->setMode(EngineMode::Accelerate);
+    else
+        engine->setMode(EngineMode::Break);
+}
+
+void Enemy::flee()
+{
+    sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
+    float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
+    sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
+    float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
+    if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
+    fleeFlag = true;
+    if(ezo::floatInRange(targetAngle, angle, 30.0f))
+        engine->setMode(EngineMode::Break);
+    else
+        engine->setMode(EngineMode::Accelerate);
+}
+
 void Enemy::updateSteering(sf::Time elapsedTime)
 {
     switch(steeringMode)
@@ -64,31 +91,10 @@ void Enemy::updateSteering(sf::Time elapsedTime)
         engine->setMode(EngineMode::Break);
         return;
     case SteeringMode::Seek:
-    {
-        sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
-        float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
-        sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
-        float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
-        if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
-        if(ezo::floatInRange(targetAngle, angle, 5.0f))
-            engine->setMode(EngineMode::Accelerate);
-        else
-            engine->setMode(EngineMode::Break);
+        seek();
         break;
-    }
     case SteeringMode::Flee:
-    {
-        sf::Vector2f targetVec = {representation.getPosition().x - target.x, representation.getPosition().y - target.y};
-        float targetLen = ezo::vecLength(targetVec.x, targetVec.y);
-        sf::Vector2f targetDir = {targetVec.x/targetLen, targetVec.y/targetLen};
-        float targetAngle = -ezo::radToDeg(std::atan2(targetDir.x, targetDir.y));
-        if(targetAngle < 0) targetAngle += 360.f;   //normalize angle to 0-360
-        flee = true;
-        if(ezo::floatInRange(targetAngle, angle, 30.0f))
-            engine->setMode(EngineMode::Break);
-        else
-            engine->setMode(EngineMode::Accelerate);
+        flee();
         break;
-    }
     }
 }

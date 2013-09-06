@@ -33,14 +33,26 @@ bool Level::loadFromFile(const char *filename)
         }
         else if(type == "enemy")
         {
-            std::string tmp;
-            sf::Vector2f enemyPos;
-            file >> tmp;
-            enemyPos.x = atoi(tmp.c_str());
-            file >> tmp;
-            enemyPos.y = atoi(tmp.c_str());
+            std::string subtype;
+            file >> subtype;
+            if(subtype == "ship")
+            {
+                sf::Vector2f pos;
+                unsigned int hp, speed, attack, rateOfFire;
+                unsigned int radarRadious, weaponRadious;
+                float mass;
+                file >> pos.x;
+                file >> pos.y;
+                file >> hp;
+                file >> speed;
+                file >> attack;
+                file >> rateOfFire;
+                file >> radarRadious;
+                file >> weaponRadious;
+                file >> mass;
 
-            enemies.push_back(new Ship(enemyPos, 5, 400, 500));
+                enemies.push_back(new Ship(pos, hp, radarRadious, weaponRadious, attack, rateOfFire, mass, speed));
+            }
         }
         else if(type == "portal")
         {
