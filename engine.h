@@ -14,6 +14,7 @@ public:
 
     void setMode(EngineMode mode) { engineMode = mode; }
     sf::Vector2f calculateForce(sf::Time elapsedTime);
+    EngineMode engineMode = EngineMode::Break;
 
 private:
     unsigned int boosterForcePerSecond;
@@ -23,6 +24,5 @@ private:
     sf::Vector2f calculateAfterburnerForce(sf::Time elapsedTime);
     sf::Vector2f calculateBreakForce(sf::Time elapsedTime);
 
-    EngineMode engineMode = EngineMode::Break;
 };
 

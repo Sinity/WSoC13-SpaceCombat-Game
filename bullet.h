@@ -4,7 +4,7 @@
 class Bullet : public GameObject
 {
 public:
-    Bullet(TextureRect texrect, sf::Vector2f position, sf::Vector2f direction, float range, unsigned int attack, unsigned speed = 2100);
+    Bullet(TextureRect texrect, sf::Vector2f position, sf::Vector2f direction, float range, unsigned int attack, unsigned speed = 1500);
 
     virtual void update(sf::Time elapsedTime);
 

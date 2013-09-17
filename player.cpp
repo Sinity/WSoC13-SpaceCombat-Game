@@ -3,11 +3,14 @@
 #include "drawablevector.h"
 #include "gun.h"
 #include "engine.h"
+#include "particles.h"
+#include "ezolib.h"
 
 Player::Player(TextureRect data, sf::Vector2f position) :
     GameObject(data, position, 1),
-    gun(new Gun(&angle, 10, 1, 500, {50, 50})),
+    gun(new Gun(&angle, 5, 10, 500, {50, 50})),
     engine(new Engine(&angle, &velocity, 1000000000)),
+    engineParticles(new ParticlesSource(representation.getPosition())),
     velocityVec(new DrawableVector({0.f, 0.f}, {0.f, 0.f}, sf::Color::Green))
 {
     hp = 100;
@@ -38,6 +41,15 @@ void Player::update(sf::Time elapsedTime)
 
     velocityVec->xy(velocity+representation.getPosition());
     velocityVec->setOrgin(representation.getPosition());
+
+    if(engine->engineMode == EngineMode::Accelerate) {
+        engineParticles->position = representation.getPosition();
+        auto rlen = ezo::vecLength(-this->resultantForce.x, -this->resultantForce.y);
+        sf::Vector2f finalVec = {resultantForce.x / rlen, resultantForce.x / rlen};
+        engineParticles->createParticles(50, finalVec, 4.f, sf::Color(0, 250, 250), 3, sf::seconds(3.f), 2.5f);
+    }
+
+    engineParticles->update(elapsedTime);
 }
 
 void Player::updatePosition(sf::Time elapsedTime)
@@ -56,6 +68,7 @@ Player::~Player()
 {
     delete gun;
     delete engine;
+    delete engineParticles;
     delete velocityVec;
 }
 

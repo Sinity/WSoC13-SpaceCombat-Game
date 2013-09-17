@@ -12,7 +12,7 @@ public:
 
     void handleInput(sf::Event event);
     void update(sf::Time elapsedTime);
-	
+
     void setLevel(unsigned int levelID);
 
     Player* player = nullptr;
@@ -21,8 +21,6 @@ private:
     void updateObjects(sf::Time elapsedTime);
     void resolveCollisions();
     void cleanForces();
-
-	Sprite* background = nullptr;
 
     std::vector<Level*> levels;
     Level* currentLevel = nullptr;

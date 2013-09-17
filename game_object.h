@@ -25,7 +25,7 @@ protected:
     unsigned int hp = 1;
     unsigned int fullHP = hp;
     sf::Vector2f velocity;
-    float maxVelocity = 2000;
+    float maxVelocity = 800;
 
     sf::Vector2f resultantForce;
 

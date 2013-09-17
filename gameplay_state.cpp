@@ -12,7 +12,6 @@
 
 GameplayState::GameplayState()
 {
-    background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0}, 0);
     player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
     setLevel(1);
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
@@ -172,7 +171,6 @@ void GameplayState::handleInput(sf::Event event)
 
 GameplayState::~GameplayState()
 {
-    delete background;
     delete player;
     for(auto level : levels)
         delete level;

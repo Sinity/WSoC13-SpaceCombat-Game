@@ -37,7 +37,8 @@ SOURCES += \
     /home/sinity/dev/ezolib/ezolib/estring.cpp \
     /home/sinity/dev/ezolib/ezolib/emath.cpp \
     gun.cpp \
-    engine.cpp
+    engine.cpp \
+    particles.cpp
 
 HEADERS += \
     textureRect.h \
@@ -62,4 +63,5 @@ HEADERS += \
     portal.h \
     ship.h \
     gun.h \
-    engine.h
+    engine.h \
+    particles.h

@@ -4,6 +4,7 @@
 class Player;
 class Gun;
 class Engine;
+class ParticlesSource;
 class Enemy : public GameObject
 {
 public:
@@ -33,4 +34,5 @@ protected:
     void updateSteering(sf::Time elapsedTime);
 
     Engine* engine;
+    ParticlesSource* engineParticles;
 };

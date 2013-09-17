@@ -7,7 +7,7 @@ Bullet::Bullet(TextureRect texrect, sf::Vector2f position, sf::Vector2f directio
 {
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
     representation.setPosition(position);
-    maxVelocity = 2500;
+    maxVelocity = 1500;
     velocity = { direction.x * speed, direction.y * speed };
 }
 

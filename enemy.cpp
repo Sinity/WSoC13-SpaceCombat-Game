@@ -6,13 +6,15 @@
 #include "player.h"
 #include "gameplay_state.h"
 #include "engine.h"
+#include "particles.h"
 
 Enemy::Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned int rateOfFire,
              unsigned int attackRange, unsigned int bulletsSpeed, unsigned int boosterForce,
              float mass, int hp) :
     GameObject(image, pos, 1),
     gun(new Gun(&angle, rateOfFire, attack, attackRange, {50, 50}, bulletsSpeed)),
-    engine(new Engine(&angle, &velocity, boosterForce))
+    engine(new Engine(&angle, &velocity, boosterForce)),
+    engineParticles(new ParticlesSource(representation.getPosition()))
 {
     representation.setOrigin(representation.getLocalBounds().width / 2, representation.getLocalBounds().height / 2);
     this->hp = hp;
@@ -26,6 +28,7 @@ Enemy::~Enemy()
 {
     delete gun;
     delete engine;
+    delete engineParticles;
 }
 
 void Enemy::update(sf::Time elapsedTime)
@@ -33,6 +36,15 @@ void Enemy::update(sf::Time elapsedTime)
     gun->update(elapsedTime);
     updateAI(elapsedTime);
     updatePosition(elapsedTime);
+
+    if(engine->engineMode == EngineMode::Accelerate) {
+        engineParticles->position = representation.getPosition();
+        auto rlen = ezo::vecLength(-this->resultantForce.x, -this->resultantForce.y);
+        sf::Vector2f finalVec = {resultantForce.x / rlen, resultantForce.x / rlen};
+        engineParticles->createParticles(20, finalVec, 4.f, sf::Color(250, 20, 20), 3, sf::seconds(3.f), 2.5f);
+    }
+
+    engineParticles->update(elapsedTime);
 }
 
 void Enemy::updatePosition(sf::Time elapsedTime)
