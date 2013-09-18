@@ -4,6 +4,8 @@
 class Player;
 class Level;
 class Sprite;
+class Bar;
+class Text;
 class GameplayState : public GameState
 {
 public:
@@ -16,6 +18,8 @@ public:
     void setLevel(unsigned int levelID);
 
     Player* player = nullptr;
+    Bar* playerHP;
+    Text* score;
 
 private:
     void updateObjects(sf::Time elapsedTime);

@@ -9,10 +9,21 @@
 #include "gun.h"
 #include "bullet.h"
 #include "portal.h"
+#include "bar.h"
+#include "text.h"
 
 GameplayState::GameplayState()
 {
     player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
+    playerHP = new Bar(player->hp, sf::Color::Red, {500, 30}, {0, 0}, 0);
+    servLoc.getRender()->addObj(playerHP);
+    score = new Text;
+    servLoc.getRender()->addObj(score);
+    score->font.loadFromFile("arial.ttf");
+    score->text.setFont(score->font);
+    score->text.setPosition({0, 35});
+    score->text.setColor(sf::Color::Green);
+
     setLevel(1);
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
 }
@@ -32,6 +43,8 @@ void GameplayState::update(sf::Time elapsedTime)
         servLoc.getEngine()->popState();
         return;
     }
+    playerHP->update(player->hp);
+    score->text.setString(ezo::string::format("Score: %d", player->score).c());
 
     sf::View view(player->representation.getPosition(), servLoc.getRender()->getWindow()->getDefaultView().getSize());
     servLoc.getRender()->getWindow()->setView(view);
@@ -97,9 +110,8 @@ void GameplayState::resolveCollisions()
                 enemy->hit(playerBullet->attack);
                 playerBullet->destroy();
 
-                //enemy->setPosition(enemy->oldPosition); TODO set small mass  in bullet and enable it.
-                //todo: implement better solution(using good equation(this including mass))
-                //enemy->velocity = playerBullet->velocity; //bounce from colliding object
+                if(!enemy->exist)
+                    player->score++;
             }
 
     //enemies bullets, player -> hit player

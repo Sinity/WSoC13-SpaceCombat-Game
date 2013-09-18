@@ -48,7 +48,7 @@ void MenuState::handleInput(sf::Event event)
 }
 
 void MenuState::update(sf::Time elapsedTime)
-{    
+{
 }
 
 void MenuState::resume()

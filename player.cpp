@@ -11,7 +11,7 @@ Player::Player(TextureRect data, sf::Vector2f position) :
     gun(new Gun(&angle, 5, 10, 500, {50, 50})),
     engine(new Engine(&angle, &velocity, 1000000000)),
     engineParticles(new ParticlesSource(representation.getPosition())),
-    velocityVec(new DrawableVector({0.f, 0.f}, {0.f, 0.f}, sf::Color::Green))
+    velocityVec(new DrawableVector({0.f, 0.f}, {0.f, 0.f}, sf::Color::Green)), score(0)
 {
     hp = 100;
     fullHP = hp;
