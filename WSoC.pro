@@ -4,8 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG += c++11
 
-INCLUDEPATH += /home/sinity/dev/ezolib/ezolib
-
 LIBS += /usr/lib/libsfml-graphics.so \
         /usr/lib/libsfml-window.so \
         /usr/lib/libsfml-system.so \
@@ -33,14 +31,14 @@ SOURCES += \
     game_state.cpp \
     portal.cpp \
     ship.cpp \
-    /home/sinity/dev/ezolib/ezolib/logger.cpp \
-    /home/sinity/dev/ezolib/ezolib/estring.cpp \
-    /home/sinity/dev/ezolib/ezolib/emath.cpp \
     gun.cpp \
     engine.cpp \
     particles.cpp \
     bar.cpp \
-    text.cpp
+    text.cpp \
+    estring.cpp \
+    emath.cpp \
+    logger.cpp
 
 HEADERS += \
     textureRect.h \
@@ -68,4 +66,9 @@ HEADERS += \
     engine.h \
     particles.h \
     bar.h \
-    text.h
+    text.h \
+    ezolib.h \
+    estring.h \
+    emath.h \
+    object.h \
+    logger.h
