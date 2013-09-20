@@ -15,6 +15,4 @@ private:
     Sprite* menu_return = nullptr;
     Sprite* menu_main = nullptr;
     Sprite* menu_quit = nullptr;
-
-    Sprite* under_menu = nullptr;
 };

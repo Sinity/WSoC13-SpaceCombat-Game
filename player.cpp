@@ -24,7 +24,7 @@ void Player::update(sf::Time elapsedTime)
     gun->update(elapsedTime);
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        shoot(sf::Vector2f(0, 0));
+        shoot();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         engine->setMode(EngineMode::Accelerate);
@@ -55,7 +55,7 @@ void Player::updatePosition(sf::Time elapsedTime)
     representation.setPosition(representation.getPosition());
 }
 
-void Player::shoot(sf::Vector2f target)
+void Player::shoot()
 {
     gun->shoot(representation.getPosition());
 }

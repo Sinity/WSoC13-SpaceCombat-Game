@@ -5,12 +5,10 @@ void Renderer::draw()
 {
     servLoc.getProfiler()->start("rending");
 
-    timeSinceLastDrawing = timer.restart();
-
     window.clear();
     for (auto currentLayer : *drawList)
         for (auto currentObject : currentLayer)
-            currentObject->draw(timeSinceLastDrawing, &window);
+            currentObject->draw(&window);
     window.display();
 
     servLoc.getProfiler()->stop();
@@ -33,9 +31,9 @@ sf::Vector2u Renderer::getResoultion()
 
 void Renderer::addObj(Drawable* obj)
 {
-    uint32_t level = obj->getLevel();
-    while(drawList->size() <= level) //less of equal because level is index in
-    {								//vector and drawList.size returns amount of elements(index+1).
+    uint32_t level = obj->level;
+    while(drawList->size() <= level)
+    {
         drawList->push_back(std::vector<Drawable*>());
     }
     (*drawList)[level].push_back(obj);

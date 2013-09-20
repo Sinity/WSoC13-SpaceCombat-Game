@@ -5,26 +5,21 @@
 
 IngameMenuState::IngameMenuState()
 {
-    menu_return = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_back"),  {
-                                 servLoc.getRender()->getWindow()->getSize().x / 2 -
-                                     servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
-
-                                     servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
-                             }, 1);
-    menu_main = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_return"),  {
-                               servLoc.getRender()->getWindow()->getSize().x / 2 -
-                                   servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
-
-                               servLoc.getRender()->getWindow()->getSize().y / 2 -
-                                   servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
-                           }, 1);
-    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),  {
-                               servLoc.getRender()->getWindow()->getSize().x / 2 -
-                                   servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
-
-                               servLoc.getRender()->getWindow()->getSize().y -
-                                   servLoc.getResourceManager()->getTextureRect("menu_start").position.height
-                           }, 1);
+    menu_return = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_back"),
+                             {
+                                 (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
+                                 (float)servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
+                             });
+    menu_main = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_return"),
+                            {
+                               (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
+                               (float)servLoc.getRender()->getWindow()->getSize().y / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
+                            });
+    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),
+                            {
+                               (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
+                               (float)servLoc.getRender()->getWindow()->getSize().y - servLoc.getResourceManager()->getTextureRect("menu_start").position.height
+                            });
     servLoc.getRender()->getWindow()->setView(servLoc.getRender()->getWindow()->getDefaultView());
 }
 
@@ -33,7 +28,6 @@ IngameMenuState::~IngameMenuState()
     delete menu_main;
     delete menu_quit;
     delete menu_return;
-    delete under_menu;
 }
 
 void IngameMenuState::handleInput(sf::Event event)

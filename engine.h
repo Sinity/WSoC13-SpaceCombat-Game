@@ -10,7 +10,7 @@ enum class EngineMode {
 class Engine
 {
 public:
-    Engine(float *angle, sf::Vector2f* velocity, unsigned int boosterForcePerSecond);
+    Engine(float* angle, sf::Vector2f* velocity, unsigned int boosterForcePerSecond);
 
     void setMode(EngineMode mode) { engineMode = mode; }
     sf::Vector2f calculateForce(sf::Time elapsedTime);

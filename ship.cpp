@@ -11,9 +11,9 @@ Ship::Ship(sf::Vector2f position, unsigned int hp, unsigned int radarRadious, un
     this->fullHP = hp;
 }
 
-void Ship::updateAI(sf::Time elapsedTime)
+void Ship::updateAI()
 {
-    Enemy::updateAI(elapsedTime);
+    Enemy::updateAI();
 
     sf::Vector2f targetVec = target - representation.getPosition();
     float targetVecLen = ezo::vecLength(targetVec.x, targetVec.y);
@@ -21,7 +21,6 @@ void Ship::updateAI(sf::Time elapsedTime)
     switch(state)
     {
     case State::stay:
-        printf("stay\n");
         if(targetVecLen < radarRadious)
         {
             if(hp < fullHP/2)
@@ -35,13 +34,11 @@ void Ship::updateAI(sf::Time elapsedTime)
             steeringMode = SteeringMode::Stay;
         break;
     case State::escape:
-        printf("escape\n");
         if(targetVecLen > radarRadious)
             state = State::stay;
         steeringMode = SteeringMode::Flee;
         break;
     case State::chase:
-        printf("chase\n");
         if(targetVecLen > radarRadious)
             state = State::stay;
         else if(hp < fullHP/2)
@@ -52,12 +49,11 @@ void Ship::updateAI(sf::Time elapsedTime)
             steeringMode = SteeringMode::Seek;
         break;
     case State::fire:
-        printf("fire\n");
         if(targetVecLen > radarRadious)
             state = State::stay;
         else if(hp < fullHP/2)
             state = State::escape;
-        else if(targetVecLen > weaponRadious)
+        else if(targetVecLen > weaponRadious / 3)
             state = State::chase;
         else
             steeringMode = SteeringMode::Stay;

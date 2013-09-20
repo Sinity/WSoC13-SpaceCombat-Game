@@ -1,8 +1,8 @@
 #include "particles.h"
 #include "service_locator.h"
 
-ParticlesSource::ParticlesSource(sf::Vector2f position, int level) : position(position),
-    Drawable(level)
+ParticlesSource::ParticlesSource(sf::Vector2f position, int level) :
+    Drawable(level), position(position)
 {
     servLoc.getRender()->addObj(this);
 }
@@ -12,7 +12,7 @@ ParticlesSource::~ParticlesSource()
     servLoc.getRender()->removeObj(this);
 }
 
-void ParticlesSource::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
+void ParticlesSource::draw(sf::RenderWindow *window)
 {
     sf::VertexArray points(sf::Points, particles.size());
     for(unsigned int i = 0; i < particles.size(); i++)
@@ -52,7 +52,7 @@ void ParticlesSource::createParticles(unsigned count, sf::Vector2f baseVelocity,
         sf::Time finalLifetime;
 
         finalVel = {baseVelocity.x + velRandDist(randEngine), baseVelocity.y + velRandDist(randEngine)};
-        finalColor = {color.r + colRandDist(randEngine), color.g + colRandDist(randEngine), color.b + colRandDist(randEngine)};
+        finalColor = sf::Color(color.r + colRandDist(randEngine), color.g + colRandDist(randEngine), color.b + colRandDist(randEngine));
         finalLifetime = sf::Time(life + sf::seconds(lifeRandDist(randEngine)));
 
         particles.emplace_back(this->position, finalVel, finalColor, finalLifetime);

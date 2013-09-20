@@ -30,8 +30,8 @@ sf::Vector2f Engine::calculateAfterburnerForce(sf::Time elapsedTime)
 
 sf::Vector2f Engine::calculateBreakForce(sf::Time elapsedTime)
 {
-    float velLen = ezo::vecLength( velocity->x, velocity->y);
-    if(velLen < 0.1)
+    float velLen = ezo::vecLength(velocity->x, velocity->y);
+    if(velLen < 1)
     {
         velocity->x = velocity->y = 0.f;
         return {0.f, 0.f};

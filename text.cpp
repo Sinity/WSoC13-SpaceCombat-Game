@@ -1,7 +1,7 @@
 #include "text.h"
 
 
-void Text::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
+void Text::draw(sf::RenderWindow *window)
 {
     auto viewTmp = window->getView();
     window->setView(window->getDefaultView());

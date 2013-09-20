@@ -18,7 +18,7 @@ Game::Game()
 
     resourceManager.loadResources("resources/resources.txt");
 
-    renderer.init("Game for WSoC", 1920, 1080);
+    renderer.init("Space Combat");
     timeStep = sf::milliseconds(1000 / 60);
 
     pushState(new MenuState);

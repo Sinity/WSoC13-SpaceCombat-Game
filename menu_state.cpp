@@ -10,21 +10,17 @@ MenuState::MenuState()
     background->setScale(servLoc.getRender()->getWindow()->getSize().x / background->getSFMLSprite().getGlobalBounds().width,
                          servLoc.getRender()->getWindow()->getSize().y / background->getSFMLSprite().getGlobalBounds().height);
 
-    menu_start = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_start"), {
-                                servLoc.getRender()->getWindow()->getSize().x / 2 -
-                                    servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
-
-                                servLoc.getRender()->getWindow()->getSize().y / 2 -
-                                    servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
+    menu_start = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_start"),
+                            {
+                                (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
+                                (float)servLoc.getRender()->getWindow()->getSize().y / 2 - servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
                             });
 
-    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),  {
-                               servLoc.getRender()->getWindow()->getSize().x / 2 -
-                                   servLoc.getResourceManager()->getTextureRect("menu_quit").position.width / 2,
-
-                               servLoc.getRender()->getWindow()->getSize().y  -
-                                   servLoc.getResourceManager()->getTextureRect("menu_quit").position.height
-                           });
+    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),
+                            {
+                               (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_quit").position.width / 2,
+                               (float)servLoc.getRender()->getWindow()->getSize().y - servLoc.getResourceManager()->getTextureRect("menu_quit").position.height
+                            });
 
     servLoc.getLogger()->log(POS, "Menu state initialized.");
 }

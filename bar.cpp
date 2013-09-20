@@ -15,21 +15,19 @@ Bar::Bar(float maxValue, sf::Color color, sf::Vector2f size, sf::Vector2f positi
 }
 
 
-void Bar::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
+void Bar::draw(sf::RenderWindow* window)
 {
     auto viewTmp = window->getView();
     window->setView(window->getDefaultView());
+
     window->draw(representation);
     window->draw(frame);
+
     window->setView(viewTmp);
 }
 
 void Bar::update(float currentValue)
 {
-    float newWidth;
-
-    float curr = currentValue / maxValue;
-    newWidth = maxWidth * curr;
-
-    representation.setSize(sf::Vector2f(newWidth, height));
+    float currentFill = currentValue / maxValue;
+    representation.setSize(sf::Vector2f(maxWidth * currentFill, height));
 }

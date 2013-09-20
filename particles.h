@@ -18,7 +18,7 @@ public:
     ParticlesSource(sf::Vector2f position, int level = 0);
     ~ParticlesSource();
 
-    void draw(sf::Time timeSinceLastDrawing, sf::RenderWindow* window);
+    void draw(sf::RenderWindow* window);
     void update(sf::Time dt);
 
     void createParticles(unsigned count, sf::Vector2f baseVelocity, float velocityDelta, sf::Color color,

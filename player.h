@@ -13,7 +13,7 @@ public:
     void update(sf::Time elapsedTime);
 
     void updatePosition(sf::Time elapsedTime);
-    void shoot(sf::Vector2f target);
+    void shoot();
 
     Gun* gun = nullptr;
     Engine* engine = nullptr;

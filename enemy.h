@@ -15,7 +15,7 @@ public:
 
     virtual void update(sf::Time elapsedTime);
     virtual void updatePosition(sf::Time elapsedTime);
-    virtual void updateAI(sf::Time elapsedTime);
+    virtual void updateAI();
 
     void fire();
     Gun* gun;
@@ -31,7 +31,7 @@ protected:
     } steeringMode = SteeringMode::None;
     sf::Vector2f target;
     bool fleeFlag = false;
-    void updateSteering(sf::Time elapsedTime);
+    void updateSteering();
 
     Engine* engine;
     ParticlesSource* engineParticles;

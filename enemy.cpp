@@ -34,7 +34,7 @@ Enemy::~Enemy()
 void Enemy::update(sf::Time elapsedTime)
 {
     gun->update(elapsedTime);
-    updateAI(elapsedTime);
+    updateAI();
     updatePosition(elapsedTime);
 
     if(engine->engineMode == EngineMode::Accelerate) {
@@ -54,11 +54,11 @@ void Enemy::updatePosition(sf::Time elapsedTime)
     GameObject::updatePosition(elapsedTime);
 }
 
-void Enemy::updateAI(sf::Time elapsedTime)
+void Enemy::updateAI()
 {
     GameplayState* state = (GameplayState*)servLoc.getEngine()->states.back();
     target = state->player->representation.getPosition();
-    updateSteering(elapsedTime);
+    updateSteering();
 }
 
 void Enemy::fire()
@@ -93,7 +93,7 @@ void Enemy::flee()
         engine->setMode(EngineMode::Accelerate);
 }
 
-void Enemy::updateSteering(sf::Time elapsedTime)
+void Enemy::updateSteering()
 {
     switch(steeringMode)
     {
