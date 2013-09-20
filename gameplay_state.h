@@ -20,7 +20,6 @@ public:
     Player* player = nullptr;
     Bar* playerHP;
     Text* score;
-    Text* playerPos;
 
 private:
     void updateObjects(sf::Time elapsedTime);
