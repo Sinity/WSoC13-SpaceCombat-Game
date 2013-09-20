@@ -1,10 +1,13 @@
-/* 
+/*
  * File:   collision.cpp
  * Author: Nick (original version), ahnonay (SFML2 compatibility)
  */
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "collision.h"
+#include "profiler.h"
+
+Profiler pixelProfiler("pixel.txt");
 
 namespace Collision
 {
@@ -77,6 +80,8 @@ bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Vector2i _position, s
 
 bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::Uint8 AlphaLimit)
 {
+    pixelProfiler.start("pixelperfect");
+
     //get intersection (and check if there is any)
     sf::FloatRect Intersection;
     if (Object1.getGlobalBounds().intersects(Object2.getGlobalBounds(), Intersection))
@@ -84,9 +89,12 @@ bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::
         sf::IntRect O1SubRect = Object1.getTextureRect();
         sf::IntRect O2SubRect = Object2.getTextureRect();
 
+        pixelProfiler.start("getting masks");
         sf::Uint8* mask1 = bitmasks.GetMask(Object1.getTexture());
         sf::Uint8* mask2 = bitmasks.GetMask(Object2.getTexture());
+        pixelProfiler.stop();
 
+        pixelProfiler.start("loops");
         // Loop through our pixels
         for (int i = Intersection.left; i < Intersection.left + Intersection.width; i++)
             for (int j = Intersection.top; j < Intersection.top + Intersection.height; j++)
@@ -100,9 +108,15 @@ bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::
                     o2v.x < O2SubRect.width && o2v.y < O2SubRect.height)
                     if (bitmasks.GetPixel(mask1, Object1.getTexture(), (int)o1v.x + O1SubRect.left, (int)o1v.y + O1SubRect.top) > AlphaLimit &&
                         bitmasks.GetPixel(mask2, Object2.getTexture(), (int)o2v.x + O2SubRect.left, (int)o2v.y + O2SubRect.top) > AlphaLimit)
+                    {
+                        pixelProfiler.stop();
+                        pixelProfiler.stop();
                         return true;
+                    }
             }
+        pixelProfiler.stop();
     }
+    pixelProfiler.stop();
     return false;
 }
 

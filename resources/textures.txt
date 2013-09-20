@@ -1,0 +1,7 @@
+ships   resources/ships.png
+space   resources/space_background.png
+menu_start resources/start.png
+menu_quit resources/quit.png
+menu_back resources/return.png
+menu_return resources/mmenu.png
+bullet_green resources/bullet_green.png
