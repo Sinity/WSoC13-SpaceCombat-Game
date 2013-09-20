@@ -99,11 +99,17 @@ void GameplayState::updateObjects(sf::Time elapsedTime)
 
 void GameplayState::resolveCollisions()
 {
+    servLoc.getProfiler()->start("collisions");
+
+    servLoc.getProfiler()->start("player, portal");
     //player, portal -> change level
     for(auto portal : currentLevel->portals)
         if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), portal->representation.getSFMLSprite()))
             setLevel(portal->destinationID);
+    servLoc.getProfiler()->stop();
 
+
+    servLoc.getProfiler()->start("pbullet, enemy");
     //player bullet, enemy -> hit enemy, destroy bullet
     for(auto playerBullet : player->gun->bullets)
         for(Enemy* enemy : currentLevel->enemies)
@@ -115,7 +121,10 @@ void GameplayState::resolveCollisions()
                 if(!enemy->exist)
                     player->score++;
             }
+    servLoc.getProfiler()->stop();
 
+
+    servLoc.getProfiler()->start("ebullet, player");
     //enemies bullets, player -> hit player
     for(auto enemy : currentLevel->enemies)
         for(auto enemyBullet : enemy->gun->bullets)
@@ -124,7 +133,9 @@ void GameplayState::resolveCollisions()
                 player->hit(enemyBullet->attack);
                 enemyBullet->destroy();
             }
+    servLoc.getProfiler()->stop();
 
+    servLoc.getProfiler()->start("enemy, player");
     //enemy, player -> bounce
     for(Enemy* enemy : currentLevel->enemies)
             if(Collision::PixelPerfectTest(player->representation.getSFMLSprite(), enemy->representation.getSFMLSprite()))
@@ -140,7 +151,9 @@ void GameplayState::resolveCollisions()
 
                 break;
             }
+    servLoc.getProfiler()->stop();
 
+    servLoc.getProfiler()->start("enemy, enemy");
     //enemy, enemy -> bounce
     for(Enemy* enemy1 : currentLevel->enemies)
         for(Enemy* enemy2 : currentLevel->enemies)
@@ -155,7 +168,9 @@ void GameplayState::resolveCollisions()
                 //todo: implement better solution(using good equation(this including mass))
                 enemy2->velocity = tempVel; //bounce from colliding object
             }
+    servLoc.getProfiler()->stop();
 
+    servLoc.getProfiler()->stop();
 }
 
 void GameplayState::cleanForces()

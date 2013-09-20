@@ -40,7 +40,7 @@ std::string Profile::calculateResults(unsigned int depth)
     sf::Time avg, min, max, total;
     avg = sf::milliseconds(0);
     min = sf::milliseconds(__INT32_MAX__);
-    max = sf::milliseconds(__INT32_MAX__);
+    max = sf::milliseconds(-(__INT32_MAX__-1));
     total = sf::milliseconds(0);
     for(unsigned int i = 0; i < samples.size(); i++)
     {
