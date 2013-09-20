@@ -15,6 +15,7 @@ private:
     float currentValue;
     sf::Color color;
     sf::RectangleShape representation;
+    sf::RectangleShape frame;
     float maxWidth, height;
 };
 

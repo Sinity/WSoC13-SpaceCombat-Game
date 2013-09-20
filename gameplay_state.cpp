@@ -17,12 +17,21 @@ GameplayState::GameplayState()
     player = new Player(servLoc.getResourceManager()->getTextureRect("ship"), {0, 0});
     playerHP = new Bar(player->hp, sf::Color::Red, {500, 30}, {0, 0}, 0);
     servLoc.getRender()->addObj(playerHP);
+
     score = new Text;
     servLoc.getRender()->addObj(score);
     score->font.loadFromFile("arial.ttf");
     score->text.setFont(score->font);
     score->text.setPosition({0, 35});
     score->text.setColor(sf::Color::Green);
+
+    playerPos = new Text;
+    servLoc.getRender()->addObj(playerPos);
+    playerPos->font.loadFromFile("arial.ttf");
+    playerPos->text.setFont(score->font);
+    playerPos->text.setPosition({0, 60});
+    playerPos->text.setColor(sf::Color::Green);
+
 
     setLevel(1);
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
@@ -45,7 +54,8 @@ void GameplayState::update(sf::Time elapsedTime)
     }
     playerHP->update(player->hp);
     score->text.setString(ezo::string::format("Score: %d", player->score).c());
-
+    playerPos->text.setString(ezo::string::format("Pos: %f %f", player->representation.getPosition().x,
+                                                  player->representation.getPosition().y).c());
     sf::View view(player->representation.getPosition(), servLoc.getRender()->getWindow()->getDefaultView().getSize());
     servLoc.getRender()->getWindow()->setView(view);
 

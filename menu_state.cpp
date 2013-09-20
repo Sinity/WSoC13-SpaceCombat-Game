@@ -7,10 +7,24 @@
 MenuState::MenuState()
 {
     background = new Sprite(servLoc.getResourceManager()->getTextureRect("background"), {0, 0});
+    background->setScale(servLoc.getRender()->getWindow()->getSize().x / background->getSFMLSprite().getGlobalBounds().width,
+                         servLoc.getRender()->getWindow()->getSize().y / background->getSFMLSprite().getGlobalBounds().height);
 
-    menu_start = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_start"), {100, 100});
-    menu_highscores = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_highscores"), {100, 289});
-    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"), {100, 478});
+    menu_start = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_start"), {
+                                servLoc.getRender()->getWindow()->getSize().x / 2 -
+                                    servLoc.getResourceManager()->getTextureRect("menu_start").position.width / 2,
+
+                                servLoc.getRender()->getWindow()->getSize().y / 2 -
+                                    servLoc.getResourceManager()->getTextureRect("menu_start").position.height / 2
+                            });
+
+    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),  {
+                               servLoc.getRender()->getWindow()->getSize().x / 2 -
+                                   servLoc.getResourceManager()->getTextureRect("menu_quit").position.width / 2,
+
+                               servLoc.getRender()->getWindow()->getSize().y  -
+                                   servLoc.getResourceManager()->getTextureRect("menu_quit").position.height
+                           });
 
     servLoc.getLogger()->log(POS, "Menu state initialized.");
 }
@@ -37,8 +51,6 @@ void MenuState::handleInput(sf::Event event)
 
             if(Collision::PixelPerfectTest((menu_start->getSFMLSprite()), mousePos))
                 servLoc.getEngine()->pushState(new GameplayState());
-            if(Collision::PixelPerfectTest((menu_highscores->getSFMLSprite()), mousePos))
-                servLoc.getLogger()->log(POS, "Highscores not implemented yet!");
             if(Collision::PixelPerfectTest((menu_quit->getSFMLSprite()), mousePos))
                 servLoc.getEngine()->popState();
         }

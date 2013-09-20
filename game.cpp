@@ -18,7 +18,7 @@ Game::Game()
 
     resourceManager.loadResources("resources/resources.txt");
 
-    renderer.init("Game for WSoC", 1280, 720);
+    renderer.init("Game for WSoC", 1920, 1080);
     timeStep = sf::milliseconds(1000 / 60);
 
     pushState(new MenuState);
@@ -113,7 +113,7 @@ void Game::popState()
         renderer.setDrawList(&states.back()->drawList);
         states.back()->resume();
     }
-    else  
+    else
         renderer.setDrawList(new std::vector<std::vector<Drawable*>>);
 }
 

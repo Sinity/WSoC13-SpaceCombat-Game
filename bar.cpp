@@ -6,6 +6,12 @@ Bar::Bar(float maxValue, sf::Color color, sf::Vector2f size, sf::Vector2f positi
     representation.setFillColor(color);
     representation.setSize(size);
     representation.setPosition(position);
+
+    frame.setFillColor(sf::Color::Transparent);
+    frame.setOutlineColor(color);
+    frame.setOutlineThickness(1);
+    frame.setSize(size);
+    frame.setPosition(position);
 }
 
 
@@ -14,6 +20,7 @@ void Bar::draw(sf::Time timeSinceLastDrawing, sf::RenderWindow *window)
     auto viewTmp = window->getView();
     window->setView(window->getDefaultView());
     window->draw(representation);
+    window->draw(frame);
     window->setView(viewTmp);
 }
 

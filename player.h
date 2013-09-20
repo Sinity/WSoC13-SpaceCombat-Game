@@ -21,6 +21,4 @@ public:
     unsigned int score;
 private:
     ParticlesSource* engineParticles;
-
-    DrawableVector* velocityVec = nullptr;
 };
