@@ -18,7 +18,7 @@ public:
     Gun* gun = nullptr;
     Engine* engine = nullptr;
 
-    unsigned int score;
+    unsigned int score = 0;
 private:
     ParticlesSource* engineParticles;
 };

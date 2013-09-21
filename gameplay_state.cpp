@@ -46,7 +46,7 @@ void GameplayState::update(sf::Time elapsedTime)
         return;
     }
     playerHP->update(player->hp);
-    score->text.setString(ezo::string::format("Score: %d", player->score).c());
+    score->text.setString(ezo::string::format("Score: %u", player->score).c());
 
     sf::View view(player->representation.getPosition(), servLoc.getRender()->getWindow()->getDefaultView().getSize());
     servLoc.getRender()->getWindow()->setView(view);
