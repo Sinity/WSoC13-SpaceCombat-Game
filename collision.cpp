@@ -89,10 +89,8 @@ bool PixelPerfectTest(const sf::Sprite& Object1, const sf::Sprite& Object2, sf::
         sf::IntRect O1SubRect = Object1.getTextureRect();
         sf::IntRect O2SubRect = Object2.getTextureRect();
 
-        pixelProfiler.start("getting masks");
         sf::Uint8* mask1 = bitmasks.GetMask(Object1.getTexture());
         sf::Uint8* mask2 = bitmasks.GetMask(Object2.getTexture());
-        pixelProfiler.stop();
 
         pixelProfiler.start("loops");
         // Loop through our pixels

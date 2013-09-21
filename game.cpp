@@ -18,7 +18,7 @@ Game::Game()
 
     resourceManager.loadResources("resources/resources.txt");
 
-    renderer.init("Space Combat");
+    renderer.init("Space Combat", 1280, 720);
     timeStep = sf::milliseconds(1000 / 60);
 
     pushState(new MenuState);

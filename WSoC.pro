@@ -6,9 +6,7 @@ CONFIG += c++11
 
 LIBS += /usr/lib/libsfml-graphics.so \
         /usr/lib/libsfml-window.so \
-        /usr/lib/libsfml-system.so \
-        /usr/lib/libsfml-audio.so \
-        /usr/lib/libsfml-network.so
+        /usr/lib/libsfml-system.so
 
 SOURCES += \
     sprite.cpp \
