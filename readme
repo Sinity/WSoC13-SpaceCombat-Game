@@ -1,0 +1,7 @@
+WSoC.pro is for Linux, WSoC_windows.pro is for Windows
+
+To build you must set pathes to sfml in WSoC.pro/WSoC_windows.pro
+
+Copy folders: resources, levels to folder with compiled game. Create logz folder in compiled game directory.
+For windows, copy dlls from binaries folder to your folder with compiled game.
+ 
