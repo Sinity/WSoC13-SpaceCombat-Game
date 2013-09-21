@@ -15,7 +15,7 @@ Logger::Logger(const char* filename) :
 
     logFile = fopen(this->filename, "w");
     if(!logFile)
-        printf("Cannot open file: %s. Probably folders does'nt exist, so create it if you want see logs", this->filename);
+        printf("Cannot open file: %s. Probably folders does'nt exist, so create it if you want see logs\n", this->filename);
 
     log(POS, "Logger initialized.");
 
