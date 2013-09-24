@@ -20,6 +20,7 @@ Enemy::Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned 
     this->hp = hp;
     fullHP = hp;
     this->mass = mass;
+    this->attack = attack;
 
     engine->setMode(EngineMode::Break);
 }

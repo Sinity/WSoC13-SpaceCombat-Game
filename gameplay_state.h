@@ -1,11 +1,13 @@
 #pragma once
 #include "game_state.h"
+#include <random>
 
 class Player;
 class Level;
 class Sprite;
 class Bar;
 class Text;
+class Enemy;
 class GameplayState : public GameState
 {
 public:
@@ -15,18 +17,18 @@ public:
     void handleInput(sf::Event event);
     void update(sf::Time elapsedTime);
 
-    void setLevel(unsigned int levelID);
-
     Player* player = nullptr;
+private:
     Bar* playerHP;
     Text* score;
 
-private:
     void updateObjects(sf::Time elapsedTime);
     void resolveCollisions();
     void cleanForces();
+    void resolveExistance();
 
-    std::vector<Level*> levels;
-    Level* currentLevel = nullptr;
+    std::vector<Enemy*> enemies;
+
+    std::minstd_rand randEngine = std::minstd_rand(time(0));
 };
 

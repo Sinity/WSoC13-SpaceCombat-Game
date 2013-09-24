@@ -2,7 +2,6 @@
 #include "service_locator.h"
 #include "ezolib.h"
 #include "profiler.h"
-
 #include "game_state.h"
 #include "menu_state.h"
 
@@ -18,7 +17,7 @@ Game::Game()
 
     resourceManager.loadResources("resources/resources.txt");
 
-    renderer.init("Space Combat", 1280, 720);
+    renderer.init("Space Combat");
     timeStep = sf::milliseconds(1000 / 60);
 
     pushState(new MenuState);

@@ -22,6 +22,8 @@ public:
 
     void seek();
     void flee();
+
+    unsigned attack;
 protected:
     enum class SteeringMode {
         None,

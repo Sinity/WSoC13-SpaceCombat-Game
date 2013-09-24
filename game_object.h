@@ -21,8 +21,9 @@ public:
     bool exist = true;
 
     Sprite representation;
-protected:
     unsigned int hp = 1;
+
+protected:
     unsigned int fullHP = hp;
     sf::Vector2f velocity;
     float maxVelocity = 800;
