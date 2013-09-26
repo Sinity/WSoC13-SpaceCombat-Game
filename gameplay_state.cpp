@@ -11,6 +11,7 @@
 #include "bar.h"
 #include "text.h"
 #include "ship.h"
+#include "particles.h"
 
 GameplayState::GameplayState()
 {
@@ -58,11 +59,30 @@ void GameplayState::update(sf::Time elapsedTime)
     servLoc.getProfiler()->stop();
 }
 
+void GameplayState::addExplosion(unsigned count, sf::Vector2f position, float radious)
+{
+    std::uniform_int_distribution<unsigned char> exploColor(0, 255);
+    sf::Color explosionColor(exploColor(randEngine), exploColor(randEngine), exploColor(randEngine));
+
+    ParticlesSource* explo = new ParticlesSource(position);
+    explo->createParticles(count, sf::Vector2f(0, 0), radious, explosionColor, 0, sf::seconds(0.7f), 0.4f);
+    explosions.push_back(explo);
+}
+
 void GameplayState::updateObjects(sf::Time elapsedTime)
 {
     player->update(elapsedTime);
     for(Enemy* enemy :  enemies)
         enemy->update(elapsedTime);
+    for(unsigned int i = 0; i < explosions.size(); i++)
+    {
+        explosions[i]->update(elapsedTime);
+        if(explosions[i]->empty())
+        {
+            delete explosions[i];
+            explosions.erase(explosions.begin() + i);
+        }
+    }
 }
 
 void GameplayState::resolveCollisions()
@@ -86,7 +106,7 @@ void GameplayState::resolveCollisions()
 
     servLoc.getProfiler()->start("ebullet, player");
     //enemies bullets, player -> hit player
-    for(auto enemy :  enemies)
+    for(auto enemy : enemies)
         for(auto enemyBullet : enemy->gun->bullets)
             if(Collision::PixelPerfectTest(enemyBullet->representation.getSFMLSprite(), player->representation.getSFMLSprite()))
             {
@@ -158,6 +178,13 @@ void GameplayState::resolveExistance()
         }
         if(!enemies[i]->exist)
         {
+            std::uniform_int_distribution<unsigned char> exploColor(0, 255);
+            sf::Color explosionColor(exploColor(randEngine), exploColor(randEngine), exploColor(randEngine));
+
+            ParticlesSource* explo = new ParticlesSource(enemies[i]->representation.getPosition());
+            explo->createParticles(1000, sf::Vector2f(0, 0), 4.f, explosionColor, 0, sf::seconds(0.7f), 0.4f);
+            explosions.push_back(explo);
+
             std::uniform_real_distribution<float> dist(700, 800);
             std::uniform_int_distribution<int> boolDist(false, true);
 

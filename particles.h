@@ -25,6 +25,9 @@ public:
                          int colorDelta, sf::Time life, float lifeDelta);
 
     sf::Vector2f position;
+
+    size_t empty() { return particles.empty(); }
+
 private:
     std::vector<Particle> particles;
     std::minstd_rand randEngine = std::minstd_rand(time(0));

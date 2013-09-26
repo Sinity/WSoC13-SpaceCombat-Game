@@ -8,6 +8,7 @@ public:
     virtual void update(sf::Time elapsedTime);
 
     unsigned int attack;
+    void destroy();
 private:
     float range;
     unsigned int speed;
