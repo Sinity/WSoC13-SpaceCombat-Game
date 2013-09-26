@@ -22,6 +22,8 @@ Enemy::Enemy(TextureRect image, sf::Vector2f pos, unsigned int attack, unsigned 
     this->mass = mass;
     this->attack = attack;
 
+    this->maxVelocity = 700.f;
+
     engine->setMode(EngineMode::Break);
 }
 

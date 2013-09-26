@@ -26,9 +26,7 @@ SOURCES += \
     menu_state.cpp \
     ingamemenustate.cpp \
     profiler.cpp \
-    level.cpp \
     game_state.cpp \
-    portal.cpp \
     ship.cpp \
     gun.cpp \
     engine.cpp \
@@ -58,8 +56,6 @@ HEADERS += \
     menu_state.h \
     ingamemenustate.h \
     profiler.h \
-    level.h \
-    portal.h \
     ship.h \
     gun.h \
     engine.h \
