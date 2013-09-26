@@ -42,7 +42,7 @@ void Player::update(sf::Time elapsedTime)
         engineParticles->position = representation.getPosition();
         auto rlen = ezo::vecLength(-this->resultantForce.x, -this->resultantForce.y);
         sf::Vector2f finalVec = {resultantForce.x / rlen, resultantForce.x / rlen};
-        engineParticles->createParticles(50, finalVec, 4.f, sf::Color(5, 250, 250), 4, sf::seconds(3.f), 2.5f);
+        engineParticles->createParticles(30, finalVec, 4.f, sf::Color(5, 250, 250), 4, sf::seconds(0.8f), 0.4f);
     }
 
     engineParticles->update(elapsedTime);

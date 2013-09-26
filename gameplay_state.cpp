@@ -28,7 +28,7 @@ GameplayState::GameplayState()
     score->text.setColor(sf::Color::Green);
 
     player->representation.setPosition({0.f, 0.f});
-    enemies.push_back(new Ship({700.f, 700.f}, 20, 1500, 650, 1, 6.f, 10000.f, 100000000));
+    enemies.push_back(new Ship({700.f, 700.f}, 20, 1500, 650, 1, 6.f, 10000.f, 1000000000));
 
     servLoc.getLogger()->log(POS, "Gameplay state initialized");
 }
@@ -98,6 +98,8 @@ void GameplayState::resolveCollisions()
                 enemy->hit(playerBullet->attack);
                 playerBullet->destroy();
 
+                addExplosion(300, enemy->representation.getPosition(), 3.f);
+
                 if(!enemy->exist)
                     player->score++;
             }
@@ -111,6 +113,9 @@ void GameplayState::resolveCollisions()
             if(Collision::PixelPerfectTest(enemyBullet->representation.getSFMLSprite(), player->representation.getSFMLSprite()))
             {
                 player->hit(enemyBullet->attack);
+
+                addExplosion(100, player->representation.getPosition(), 3.f);
+
                 enemyBullet->destroy();
             }
     servLoc.getProfiler()->stop();
@@ -240,7 +245,7 @@ void GameplayState::resolveExistance()
                 enemyPos.x = xpart + player->representation.getPosition().x;
                 enemyPos.y = ypart + player->representation.getPosition().y;
 
-                enemies.push_back(new Ship(enemyPos, enemyHP, 1100, 700, enemyAttack, 6, 10000, 100000000));
+                enemies.push_back(new Ship(enemyPos, enemyHP, 1100, 700, enemyAttack, 6, 10000, 1000000000));
             }
         }
     }
