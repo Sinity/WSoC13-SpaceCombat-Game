@@ -5,17 +5,17 @@
 
 IngameMenuState::IngameMenuState()
 {
-    menu_return = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_back"),
+    buttonReturnToGame = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_back"),
                              {
                                  (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_back").position.width / 2,
                                  (float)servLoc.getResourceManager()->getTextureRect("menu_back").position.height / 2
                              });
-    menu_main = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_return"),
+    buttonReturnToMainMenu = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_return"),
                             {
                                (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_return").position.width / 2,
                                (float)servLoc.getRender()->getWindow()->getSize().y / 2 - servLoc.getResourceManager()->getTextureRect("menu_return").position.height / 2
                             });
-    menu_quit = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),
+    buttonQuitGame = new Sprite(servLoc.getResourceManager()->getTextureRect("menu_quit"),
                             {
                                (float)servLoc.getRender()->getWindow()->getSize().x / 2 - servLoc.getResourceManager()->getTextureRect("menu_quit").position.width / 2,
                                (float)servLoc.getRender()->getWindow()->getSize().y - servLoc.getResourceManager()->getTextureRect("menu_quit").position.height
@@ -25,44 +25,34 @@ IngameMenuState::IngameMenuState()
 
 IngameMenuState::~IngameMenuState()
 {
-    delete menu_main;
-    delete menu_quit;
-    delete menu_return;
+    delete buttonReturnToMainMenu;
+    delete buttonQuitGame;
+    delete buttonReturnToGame;
 }
 
-void IngameMenuState::handleInput(sf::Event event)
+void IngameMenuState::handleInput(sf::Event currentEvent)
 {
-    switch(event.type)
+    switch(currentEvent.type)
     {
     case sf::Event::MouseButtonPressed:
-        if(event.mouseButton.button == sf::Mouse::Left)
+        if(currentEvent.mouseButton.button == sf::Mouse::Left)
         {
-            sf::Vector2i mousePos = {event.mouseButton.x, event.mouseButton.y};
+            sf::Vector2i mousePos = {currentEvent.mouseButton.x, currentEvent.mouseButton.y};
 
-            if(Collision::PixelPerfectTest((menu_return->getSFMLSprite()), mousePos))
-            {
-                servLoc.getEngine()->popState();
-                return;
-            }
-            if(Collision::PixelPerfectTest((menu_main->getSFMLSprite()), mousePos))
-            {
-                servLoc.getEngine()->popState();
-                servLoc.getEngine()->popState();
-                return;
-            }
-            if(Collision::PixelPerfectTest((menu_quit->getSFMLSprite()), mousePos))
-            {
-                servLoc.getEngine()->popState();
-                servLoc.getEngine()->popState();
-                servLoc.getEngine()->popState();
-                return;
-            }
+            if(Collision::PixelPerfectTest((buttonReturnToGame->getSFMLSprite()), mousePos))
+                returnToGame = true;
+            else if(Collision::PixelPerfectTest((buttonReturnToMainMenu->getSFMLSprite()), mousePos))
+                returnToMainMenu = true;
+            else if(Collision::PixelPerfectTest((buttonQuitGame->getSFMLSprite()), mousePos))
+                quitGame = true;
         }
         break;
+
     case sf::Event::KeyPressed:
-        if(event.key.code == sf::Keyboard::Escape)
-            servLoc.getEngine()->popState();
+        if(currentEvent.key.code == sf::Keyboard::Escape)
+            returnToGame = true;
         break;
+
     default:
         break;
     }
@@ -70,4 +60,17 @@ void IngameMenuState::handleInput(sf::Event event)
 
 void IngameMenuState::update(sf::Time elapsedTime)
 {
+    if(returnToGame)
+        servLoc.getEngine()->popState();
+    else if(returnToMainMenu)
+    {
+        servLoc.getEngine()->popState();
+        servLoc.getEngine()->popState();
+    }
+    else if(quitGame)
+    {
+        servLoc.getEngine()->popState();
+        servLoc.getEngine()->popState();
+        servLoc.getEngine()->popState();
+    }
 }

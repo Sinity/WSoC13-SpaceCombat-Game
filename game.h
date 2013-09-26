@@ -18,6 +18,8 @@ public:
 
     Game();
     ~Game();
+
+    sf::Time elapsedTime;
 private:
     sf::Time timeStep; //time for one main loop iteration
 

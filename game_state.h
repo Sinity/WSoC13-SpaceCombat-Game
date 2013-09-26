@@ -9,11 +9,11 @@ class Drawable;
 class GameState
 {
 protected:
-	std::vector<std::vector<Drawable*>> drawList;
-	
+    std::vector<std::vector<Drawable*>> drawList;
+
 public:
     virtual void handleInput(sf::Event event) = 0;
-	virtual void update(sf::Time elapsedTime) = 0;
+    virtual void update(sf::Time elapsedTime) = 0;
     virtual void resume(){}
 
     virtual ~GameState(){}
