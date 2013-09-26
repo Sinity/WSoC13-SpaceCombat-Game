@@ -2,7 +2,7 @@
 
 Logger::Logger(const char* filename) :
     minPriority(LogType::Information),
-    active(true), buffSize(00)
+    active(true), buffSize(0)
 {
     currentTime = time(0);
     currentDate = localtime(&currentTime);

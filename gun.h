@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/System.hpp>
 #include <vector>
-
+#include "service_locator.h"
 
 class Bullet;
 class Gun
@@ -17,6 +17,8 @@ public:
     std::vector<Bullet*> bullets;
 
 private:
+    sf::Sound shootSound;
+
     sf::Vector2f* position;
     sf::Vector2f diffPosition;
 

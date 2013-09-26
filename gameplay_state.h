@@ -2,7 +2,8 @@
 #include "game_state.h"
 #include <random>
 #include <ctime>
-#include "SFML/System.hpp"
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 
 class Player;
 class Level;
@@ -37,6 +38,7 @@ private:
 
 private:
     std::vector<ParticlesSource*> explosions;
+    sf::Sound explosionSound;
 
     std::minstd_rand randEngine = std::minstd_rand(time(0));
 };

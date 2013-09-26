@@ -27,6 +27,8 @@ GameplayState::GameplayState()
     score->text.setPosition({0, 35});
     score->text.setColor(sf::Color::Green);
 
+    explosionSound.setBuffer(*servLoc.getResourceManager()->getSound("explosion"));
+
     player->representation.setPosition({0.f, 0.f});
     enemies.push_back(new Ship({700.f, 700.f}, 20, 1500, 650, 1, 6.f, 10000.f, 1000000000));
 
@@ -105,6 +107,7 @@ void GameplayState::resolveCollisions()
                 playerBullet->destroy();
 
                 addExplosion(300, enemy->representation.getPosition(), 3.f);
+                explosionSound.play();
 
                 if(!enemy->exist)
                     player->score++;
@@ -121,6 +124,7 @@ void GameplayState::resolveCollisions()
                 player->hit(enemyBullet->attack);
 
                 addExplosion(100, player->representation.getPosition(), 3.f);
+                explosionSound.play();
 
                 enemyBullet->destroy();
             }

@@ -5,10 +5,10 @@
 #include <memory>
 #include "collision.h" //for loading textures
 
-bool ResourceManager::loadTexture(const char* filename, const char* tex_name) 
+bool ResourceManager::loadTexture(const char* filename, const char* tex_name)
 {
     if (Collision::CreateTextureAndBitmask(textures[tex_name], filename))
-	{
+    {
         servLoc.getLogger()->log(POS, (char*)ezo::string::format("Texture %s loaded properly", tex_name));
         return true;
     }
@@ -26,7 +26,7 @@ bool ResourceManager::loadTexture(const char* filename, const char* tex_name)
     return false;
 }
 
-bool ResourceManager::loadTextures(const char* filename) 
+bool ResourceManager::loadTextures(const char* filename)
 {
     std::fstream file;
     file.open(filename, std::ios::in);
@@ -49,8 +49,43 @@ bool ResourceManager::loadTextures(const char* filename)
     return true;
 }
 
+bool ResourceManager::loadSound(const char *filename, const char* soundName)
+{
+    sf::SoundBuffer sound;
+    if(!sound.loadFromFile(filename))
+    {
+        servLoc.getLogger()->log(POS, (char*)ezo::string::format("Can't load sound %s from %s!", soundName, filename), LogType::Error, LogOutput::TxtFileAndConsole);
+        return false;
+    }
 
-bool ResourceManager::loadResources(const char* filename) 
+    sounds[soundName] = sound;
+    return true;
+}
+
+bool ResourceManager::loadSounds(const char *filename)
+{
+    std::fstream file;
+    file.open(filename, std::ios::in);
+    if (!file.is_open()) {
+        servLoc.getLogger()->log(POS, (char*)ezo::string::format("Can't open file %s!!!", filename),
+                LogType::Fatal, LogOutput::TxtFileAndConsole);
+        return false;
+    }
+
+    std::string soundname, soundFileName;
+    while (!file.eof())
+    {
+        file >> soundname >> soundFileName;
+        bool state = loadSound(soundFileName.c_str(), soundname.c_str());
+        if (!state)
+            return false;
+    }
+    file.close();
+    return true;
+}
+
+
+bool ResourceManager::loadResources(const char* filename)
 {
     std::fstream file;
 
@@ -65,14 +100,16 @@ bool ResourceManager::loadResources(const char* filename)
 
     static char type[80];
     static char path[320];
-    while (!file.eof()) 
-	{
-		memset(type, 0, 80);
+    while (!file.eof())
+    {
+        memset(type, 0, 80);
         file >> type >> path;
         if (!strcmp(type, "textures:"))
             loadTextures(path);
         else if (!strcmp(type, "images:"))
             loadTextureRects(path);
+        else if(!strcmp(type, "sounds:"))
+            loadSounds(path);
         else
             return false;
     }
@@ -80,31 +117,31 @@ bool ResourceManager::loadResources(const char* filename)
     return true;
 }
 
-bool ResourceManager::containsTexture(const std::string& name) 
-{ 
-	return textures.find(name) != textures.end(); 
+bool ResourceManager::containsTexture(const std::string& name)
+{
+    return textures.find(name) != textures.end();
 }
 
 sf::Texture* ResourceManager::getTexture(const std::string& name)
-{ 
-	return &textures.find(name)->second; 
+{
+    return &textures.find(name)->second;
 }
 
 bool ResourceManager::loadTextureRect(const std::string& name, sf::Texture* tex, sf::IntRect position)
 {
-	textureRects[name] = TextureRect(tex, position);
-	return true;
+    textureRects[name] = TextureRect(tex, position);
+    return true;
 }
 
 bool ResourceManager::loadTextureRect(const std::string& name, TextureRect textrect)
 {
-	textureRects[name] = textrect;
-	return true;
+    textureRects[name] = textrect;
+    return true;
 }
 
 bool ResourceManager::loadTextureRects(const char* filename)
 {
-	std::fstream file;
+    std::fstream file;
     file.open(filename, std::ios::in);
     if (!file.is_open()) {
         servLoc.getLogger()->log(POS, (char*)ezo::string::format("Can't open file %s!!!", filename),
@@ -112,10 +149,10 @@ bool ResourceManager::loadTextureRects(const char* filename)
         return false;
     }
     std::string name, texname;
-	int left, top, width, heigth;
-	
-    while (!file.eof()) 
-	{
+    int left, top, width, heigth;
+
+    while (!file.eof())
+    {
         file >> name >> texname >> left >> top >> width >> heigth;
         bool state = loadTextureRect(name, getTexture(texname), sf::IntRect(left, top, width, heigth));
         if (!state)
@@ -126,11 +163,21 @@ bool ResourceManager::loadTextureRects(const char* filename)
 }
 
 bool ResourceManager::containsTextureRect(const std::string& name)
-{	
-	return textureRects.find(name) != textureRects.end(); 	
+{
+    return textureRects.find(name) != textureRects.end();
+}
+
+sf::SoundBuffer *ResourceManager::getSound(const std::string &name)
+{
+    return &sounds.find(name)->second;
+}
+
+bool ResourceManager::containsSound(const std::string &name)
+{
+    return sounds.find(name) != sounds.end();
 }
 
 TextureRect ResourceManager::getTextureRect(const std::string& name)
 {
-	return textureRects.find(name)->second; 
+    return textureRects.find(name)->second;
 }

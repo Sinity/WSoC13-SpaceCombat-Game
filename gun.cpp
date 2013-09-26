@@ -7,9 +7,8 @@ Gun::Gun(const float* baseAngle, float shootsPerSecond, int attack, float range,
          sf::Vector2f differencePosition, unsigned int speed, float differenceAngle) :
     diffPosition(differencePosition), baseAngle(baseAngle), diffAngle(differenceAngle),
     haltDuration(sf::seconds(1 / shootsPerSecond)), attack(attack), speed(speed), range(range)
-
 {
-
+    shootSound.setBuffer(*servLoc.getResourceManager()->getSound("laser"));
 }
 
 Gun::~Gun()
@@ -33,6 +32,8 @@ void Gun::shoot(sf::Vector2f basePosition)
 
         bullet->setAngle(*baseAngle + diffAngle);
         bullets.push_back(bullet);
+
+        shootSound.play();
 
         haltAccumulator = sf::microseconds(0);
     }
