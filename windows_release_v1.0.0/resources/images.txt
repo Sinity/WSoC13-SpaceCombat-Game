@@ -1,0 +1,7 @@
+ship		ships 			108     5	50 	50
+background 	space 			0 	0 	1280	720
+bullet_green	bullet_green		0	0	12	31
+menu_start 	menu_start		0	0	600 	332
+menu_quit 	menu_quit		0	0	599 	142
+menu_return 	menu_return		0	0	599 	142
+menu_back 	menu_back		0	0	601 	142

@@ -1,0 +1,3 @@
+textures: resources/textures.txt
+images:	resources/images.txt
+sounds: resources/sounds.txt
