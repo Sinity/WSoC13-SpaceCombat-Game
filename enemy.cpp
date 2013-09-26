@@ -31,7 +31,9 @@ Enemy::~Enemy()
 {
     delete gun;
     delete engine;
-    delete engineParticles;
+
+    GameplayState* state = (GameplayState*)servLoc.getEngine()->states.back();
+    state->addExplosion(engineParticles);
 }
 
 void Enemy::update(sf::Time elapsedTime)
@@ -44,7 +46,7 @@ void Enemy::update(sf::Time elapsedTime)
         engineParticles->position = representation.getPosition();
         auto rlen = ezo::vecLength(-this->resultantForce.x, -this->resultantForce.y);
         sf::Vector2f finalVec = {resultantForce.x / rlen, resultantForce.x / rlen};
-        engineParticles->createParticles(20, finalVec, 4.f, sf::Color(250, 20, 20), 3, sf::seconds(3.f), 2.5f);
+        engineParticles->createParticles(20, finalVec, 4.f, sf::Color(250, 20, 20), 3, sf::seconds(0.8f), 0.4f);
     }
 
     engineParticles->update(elapsedTime);

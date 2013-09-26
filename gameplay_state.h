@@ -21,6 +21,7 @@ public:
     void update(sf::Time elapsedTime);
 
     void addExplosion(unsigned count, sf::Vector2f position, float radious);
+    void addExplosion(ParticlesSource* emiter);
 
     Player* player = nullptr;
 private:
@@ -33,6 +34,8 @@ private:
     void resolveExistance();
 
     std::vector<Enemy*> enemies;
+
+private:
     std::vector<ParticlesSource*> explosions;
 
     std::minstd_rand randEngine = std::minstd_rand(time(0));

@@ -69,6 +69,12 @@ void GameplayState::addExplosion(unsigned count, sf::Vector2f position, float ra
     explosions.push_back(explo);
 }
 
+void GameplayState::addExplosion(ParticlesSource* emiter)
+{
+    explosions.push_back(emiter);
+}
+
+
 void GameplayState::updateObjects(sf::Time elapsedTime)
 {
     player->update(elapsedTime);
