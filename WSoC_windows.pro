@@ -7,7 +7,8 @@ CONFIG += c++11
 INCLUDEPATH += e:\dev\libs\SFML-2.1\include
 LIBS += e:\dev\libs\SFML-2.1\lib\libsfml-graphics.a \
         e:\dev\libs\SFML-2.1\lib\libsfml-window.a \
-        e:\dev\libs\SFML-2.1\lib\libsfml-system.a
+        e:\dev\libs\SFML-2.1\lib\libsfml-system.a \
+        e:\dev\libs\SFML-2.1\lib\libsfml-audio.a
 
 SOURCES += \
     sprite.cpp \
