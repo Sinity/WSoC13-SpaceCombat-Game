@@ -64,6 +64,7 @@ void MenuState::update(sf::Time elapsedTime)
 void MenuState::resume()
 {
     servLoc.getRender()->getWindow()->setView(servLoc.getRender()->getWindow()->getDefaultView());
+	startGame = quitGame = false;
 }
 
 
