@@ -38,9 +38,9 @@ target_link_libraries(WSoC13 sfml-graphics sfml-system sfml-window sfml-audio)
 add_dependencies(WSoC13 sfml-system sfml-window sfml-audio sfml-graphics)
 
 install(TARGETS WSoC13 DESTINATION bin)
-install(DIRECTORY ${WSoC13_SOURCE_DIR}/windows_release_v1.0.0/resources DESTINATION bin)
+install(DIRECTORY ${WSoC13_SOURCE_DIR}/resources DESTINATION bin)
 
 if(WIN32)
-	install(FILES ${WSoC13_SOURCE_DIR}/windows_release_v1.0.0/libsndfile-1.dll ${WSoC13_SOURCE_DIR}/windows_release_v1.0.0/openal32.dll DESTINATION bin)
+	install(FILES ${WSoC13_SOURCE_DIR}/windows_release_v1.0.1/libsndfile-1.dll ${WSoC13_SOURCE_DIR}/windows_release_v1.0.1/openal32.dll DESTINATION bin)
 endif()
 INSTALL(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/bin/logz)")
