@@ -185,11 +185,25 @@ void GameplayState::resolveExistance()
         sf::Vector2f playerPos = player->representation.getPosition();
         float enemyLen = ezo::vecLength(playerPos.x -  enemies[i]->representation.getPosition().x,
                                         playerPos.y -  enemies[i]->representation.getPosition().y);
-        if(enemyLen > 2000.f)
+        if(enemyLen > 1500.f)
         {
-            std::uniform_real_distribution<float> dist(700, 900);
+            std::uniform_real_distribution<float> distX(servLoc.getRender()->getWindow()->getSize().x/4,
+                                                        servLoc.getRender()->getWindow()->getSize().x/2);
+            std::uniform_real_distribution<float> distY(servLoc.getRender()->getWindow()->getSize().y/4,
+                                                        servLoc.getRender()->getWindow()->getSize().y/2);
+
+            std::uniform_int_distribution<int> boolDist(false, true);
+
             sf::Vector2f playerPos = player->representation.getPosition();
-            enemies[i]->representation.setPosition({playerPos.x + dist(randEngine), playerPos.y + dist(randEngine)});
+
+            float posX = distX(randEngine);
+            float posY = distY(randEngine);
+            if(boolDist(randEngine))
+                posX = -posX;
+            if(boolDist(randEngine))
+                posY = -posY;
+
+            enemies[i]->representation.setPosition({posX + playerPos.x, posY + playerPos.y});
         }
         if(!enemies[i]->exist)
         {
@@ -200,12 +214,15 @@ void GameplayState::resolveExistance()
             explo->createParticles(1000, sf::Vector2f(0, 0), 4.f, explosionColor, 0, sf::seconds(0.7f), 0.4f);
             explosions.push_back(explo);
 
-            std::uniform_real_distribution<float> dist(700, 800);
+            std::uniform_real_distribution<float> distX(servLoc.getRender()->getWindow()->getSize().x/4,
+                                                        servLoc.getRender()->getWindow()->getSize().x/2);
+            std::uniform_real_distribution<float> distY(servLoc.getRender()->getWindow()->getSize().y/4,
+                                                        servLoc.getRender()->getWindow()->getSize().y/2);
             std::uniform_int_distribution<int> boolDist(false, true);
 
             if(boolDist(randEngine))
             {
-                player->hp += enemies[i]->attack;
+                player->hp += enemies[i]->attack * 3;
                 if(player->hp > player->fullHP)
                     player->hp = player->fullHP;
             }
@@ -248,8 +265,8 @@ void GameplayState::resolveExistance()
             for(unsigned int i = enemies.size(); i < enemiesCount; i++)
             {
                 sf::Vector2f enemyPos;
-                float xpart = dist(randEngine);
-                float ypart = dist(randEngine);
+                float xpart = distX(randEngine);
+                float ypart = distY(randEngine);
                 if(boolDist(randEngine))    xpart = -xpart;
                 if(boolDist(randEngine))    ypart = -ypart;
                 enemyPos.x = xpart + player->representation.getPosition().x;
